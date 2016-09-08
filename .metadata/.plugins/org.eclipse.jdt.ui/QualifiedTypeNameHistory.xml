@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.lang.SecurityManager"/>
+<fullyQualifiedTypeName name="lib.SmartForm"/>
+<fullyQualifiedTypeName name="lib.TextReplacer"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.io.BufferedReader"/>
+<fullyQualifiedTypeName name="java.io.FileReader"/>
+<fullyQualifiedTypeName name="java.util.Arrays"/>
+<fullyQualifiedTypeName name="lib.Autocomplete"/>
+<fullyQualifiedTypeName name="javax.swing.KeyStroke"/>
+</qualifiedTypeNameHistroy>

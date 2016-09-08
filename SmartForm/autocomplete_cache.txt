@@ -1,0 +1,3 @@
+Nume: Dorel, Mircea, Toncu, Cojocaru
+Prenume: Monica, Vlad, Stefan, Raphael
+E-mail: papi@gmail.com, ureche@hotmail.com, stef29@gmail.com, raf29@gmail.com

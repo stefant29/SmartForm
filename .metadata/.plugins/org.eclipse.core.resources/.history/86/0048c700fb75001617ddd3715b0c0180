@@ -1,0 +1,31 @@
+package lib;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+
+public class SmartForm {
+	private static final String fileName = "SmartForm.docx";
+
+	public static void main(String[] args) throws IOException {
+
+	}
+
+	// Metoda ce salveaza documentul Word:
+	private static void saveWord(String filePath, XWPFDocument docx) throws FileNotFoundException, IOException {
+		FileOutputStream outContent = null;
+		try {
+			outContent = new FileOutputStream(filePath);
+			docx.write(outContent);
+		} finally {
+			outContent.close();
+		}
+	}
+}
