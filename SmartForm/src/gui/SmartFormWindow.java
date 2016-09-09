@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
@@ -31,7 +32,7 @@ import utils.SmartForm;
 import utils.TextReplacer;
 import utils.Autocomplete.CommitAction;
 
-public class MyWindow extends JFrame {
+public class SmartFormWindow extends JFrame {
 
 	private static ArrayList<String> numeInput = null;
 	private static ArrayList<String> prenumeInput = null;
@@ -77,18 +78,22 @@ public class MyWindow extends JFrame {
 	}
 
 	public static void main(String[] args) throws MalformedURLException {
-		// first read data:
+		// First read data for autocomplete fields:
 		// readChacheData();
-
 		final String COMMIT_ACTION = "commit";
 
-		MyWindow win = new MyWindow();
+		// GUI stuff:
+		// Creating the main window:
+		SmartFormWindow window = new SmartFormWindow();
+		// Setting the window's dimensions:
 		Dimension dim = new Dimension(600, 400);
-		win.setSize(dim);
-		win.setTitle("MyWindow is right here now!");
-		URL iconURL = new URL("file:///C:/Users/Stefan/Desktop/leu.png");
-		ImageIcon icon = new ImageIcon(iconURL);
-		win.setIconImage(icon.getImage());
+		window.setSize(dim);
+		// Setting the window's title:
+		window.setTitle("SmartForm");
+		// Setting the window's icon:
+		ImageIcon icon = new ImageIcon("lionIcon.png");
+		window.setIconImage(icon.getImage());
+		// Setting the window's background:
 		Background background = new Background("ubuntu.png", dim);
 		background.setSize(400, 200);
 		background.repaint();
@@ -109,28 +114,25 @@ public class MyWindow extends JFrame {
 		plateNoPanel.add(plateNoBox);
 		plateNoPanel.setSize(30, 20);
 		plateNoPanel.setOpaque(false);
-
-		////// start of autocomplete for plateNoBox
+		// ---> Start of autocomplete code for plateNoBox:
 		// Without this, cursor always leaves text field
 		plateNoBox.setFocusTraversalKeysEnabled(false);
-
-		ArrayList<String> keywords = new ArrayList<String>(5);
-		keywords.add("Example");
-		keywords.add("example");
-		keywords.add("autocomplete");
-		keywords.add("autoreactor");
-		keywords.add("Stackabuse");
-		keywords.add("java");
-		Autocomplete autoComplete = new Autocomplete(plateNoBox, keywords);
+		// Keywords for autocomplete:
+		ArrayList<String> plateNoBoxKeywords = new ArrayList<String>(5);
+		plateNoBoxKeywords.add("B");
+		plateNoBoxKeywords.add("BV");
+		plateNoBoxKeywords.add("300");
+		plateNoBoxKeywords.add("RAF");
+		plateNoBoxKeywords.add("autoreactor");
+		plateNoBoxKeywords.add("Stackabuse");
+		plateNoBoxKeywords.add("java");
+		Autocomplete autoComplete = new Autocomplete(plateNoBox, plateNoBoxKeywords);
 		plateNoBox.getDocument().addDocumentListener(autoComplete);
-
 		// Maps the tab key to the commit action, which finishes the
-		// autocomplete
-		// when given a suggestion
+		// autocomplete when given a suggestion:
 		plateNoBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
 		plateNoBox.getActionMap().put(COMMIT_ACTION, autoComplete.new CommitAction());
-
-		// end of autocomplete for plateNoBox
+		// <--- end of autocomplete for plateNoBox
 
 		// Data incarcare:
 		FlowLayout loadingDateLayout = new FlowLayout();
@@ -228,9 +230,11 @@ public class MyWindow extends JFrame {
 		savetxt.setForeground(Color.YELLOW);
 		savetxt.setOpaque(false);
 		savetxt.setEditable(false);
-		JButton b1 = new JButton("Feed it!");
+		JButton saveButton = new JButton("Save");
+		saveButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		saveButton.setVerticalTextPosition(SwingConstants.CENTER);
 		savePanel.add(savetxt);
-		savePanel.add(b1);
+		savePanel.add(saveButton);
 		savePanel.setOpaque(false);
 
 		background.add(plateNoPanel);
@@ -241,8 +245,6 @@ public class MyWindow extends JFrame {
 		background.add(unloadingAdressPanel);
 		background.add(savePanel);
 
-		// background.add(txt);
-		// background.add(b1);
 		// Setam layout-ul:
 		GridLayout layout = new GridLayout();
 		// Setam alinierea la stanga:
@@ -252,10 +254,10 @@ public class MyWindow extends JFrame {
 		layout.setHgap(30);
 		layout.setVgap(30);
 		background.setLayout(layout);
-		win.add(background);
-		win.setResizable(false);
-		win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		win.setVisible(true);
+		window.add(background);
+		window.setResizable(false);
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setVisible(true);
 
 		/// BACKEND
 		SmartForm smartForm = new SmartForm();
