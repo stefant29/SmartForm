@@ -29,6 +29,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import utils.Autocomplete;
 import utils.SmartForm;
 import utils.TextReplacer;
+import utils.Autocomplete.CommitAction;
 
 public class MyWindow extends JFrame {
 
@@ -40,7 +41,6 @@ public class MyWindow extends JFrame {
 		try (BufferedReader br = new BufferedReader(new FileReader("autocomplete_cache.txt"))) {
 			StringBuilder sb = new StringBuilder();
 			String line = br.readLine();
-
 			while (line != null) {
 				// get the name of the line ex: Nume, Prenume, E-mail
 				String[] splitInput = line.split(": ");
@@ -78,7 +78,7 @@ public class MyWindow extends JFrame {
 
 	public static void main(String[] args) throws MalformedURLException {
 		// first read data:
-//		readChacheData();
+		// readChacheData();
 
 		final String COMMIT_ACTION = "commit";
 
@@ -103,6 +103,7 @@ public class MyWindow extends JFrame {
 		plateNoText.setFont(plateNoFont);
 		plateNoText.setForeground(Color.YELLOW);
 		plateNoText.setOpaque(false);
+		plateNoText.setEditable(false);
 		JTextField plateNoBox = new JTextField(20);
 		plateNoPanel.add(plateNoText);
 		plateNoPanel.add(plateNoBox);
@@ -117,6 +118,7 @@ public class MyWindow extends JFrame {
 		keywords.add("Example");
 		keywords.add("example");
 		keywords.add("autocomplete");
+		keywords.add("autoreactor");
 		keywords.add("Stackabuse");
 		keywords.add("java");
 		Autocomplete autoComplete = new Autocomplete(plateNoBox, keywords);
@@ -127,7 +129,7 @@ public class MyWindow extends JFrame {
 		// when given a suggestion
 		plateNoBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
 		plateNoBox.getActionMap().put(COMMIT_ACTION, autoComplete.new CommitAction());
-		
+
 		// end of autocomplete for plateNoBox
 
 		// Data incarcare:
@@ -140,6 +142,7 @@ public class MyWindow extends JFrame {
 		loadingDateText.setFont(loadingDateFont);
 		loadingDateText.setForeground(Color.YELLOW);
 		loadingDateText.setOpaque(false);
+		loadingDateText.setEditable(false);
 		JTextField loadingDateBox = new JTextField(20);
 		loadingDatePanel.add(loadingDateText);
 		loadingDatePanel.add(loadingDateBox);
@@ -156,6 +159,7 @@ public class MyWindow extends JFrame {
 		loadingAdressText.setFont(loadingAdressFont);
 		loadingAdressText.setForeground(Color.YELLOW);
 		loadingAdressText.setOpaque(false);
+		loadingAdressText.setEditable(false);
 		JTextField loadingAdressBox = new JTextField(20);
 		loadingAdressPanel.add(loadingAdressText);
 		loadingAdressPanel.add(loadingAdressBox);
@@ -172,6 +176,7 @@ public class MyWindow extends JFrame {
 		refText.setFont(refFont);
 		refText.setForeground(Color.YELLOW);
 		refText.setOpaque(false);
+		refText.setEditable(false);
 		JTextField refBox = new JTextField(20);
 		refPanel.add(refText);
 		refPanel.add(refBox);
@@ -188,6 +193,7 @@ public class MyWindow extends JFrame {
 		unloadingDateText.setFont(unloadingDateFont);
 		unloadingDateText.setForeground(Color.YELLOW);
 		unloadingDateText.setOpaque(false);
+		unloadingDateText.setEditable(false);
 		JTextField unloadingDateBox = new JTextField(20);
 		unloadingDatePanel.add(unloadingDateText);
 		unloadingDatePanel.add(unloadingDateBox);
@@ -204,6 +210,7 @@ public class MyWindow extends JFrame {
 		unloadingAdressText.setFont(unloadingAdressFont);
 		unloadingAdressText.setForeground(Color.YELLOW);
 		unloadingAdressText.setOpaque(false);
+		unloadingAdressText.setEditable(false);
 		JTextField unloadingAdressBox = new JTextField(20);
 		unloadingAdressPanel.add(unloadingAdressText);
 		unloadingAdressPanel.add(unloadingAdressBox);
@@ -220,6 +227,7 @@ public class MyWindow extends JFrame {
 		savetxt.setFont(saveFont);
 		savetxt.setForeground(Color.YELLOW);
 		savetxt.setOpaque(false);
+		savetxt.setEditable(false);
 		JButton b1 = new JButton("Feed it!");
 		savePanel.add(savetxt);
 		savePanel.add(b1);
@@ -232,6 +240,7 @@ public class MyWindow extends JFrame {
 		background.add(unloadingDatePanel);
 		background.add(unloadingAdressPanel);
 		background.add(savePanel);
+
 		// background.add(txt);
 		// background.add(b1);
 		// Setam layout-ul:
