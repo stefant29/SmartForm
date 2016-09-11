@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,13 +19,17 @@ import java.util.Arrays;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
@@ -233,6 +239,62 @@ public class SmartFormWindow extends JFrame {
 		JButton saveButton = new JButton("Save");
 		saveButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		saveButton.setVerticalTextPosition(SwingConstants.CENTER);
+		saveButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				// Execute this when the Save button is pressed:
+				// We need to get the content of text boxes and complete the
+				// Word doc with it:
+				String plateNo = plateNoBox.getText();
+				String loadingAdress = loadingAdressBox.getText();
+				String unloadingAdress = unloadingAdressBox.getText();
+				String ref = refBox.getText();
+				String loadingDate = loadingDateBox.getText();
+				String unloadingDate = unloadingDateBox.getText();
+				// Get the dialog reply:
+				int reply = JOptionPane.showConfirmDialog(null, "Sunteti sigur ca valorile introduse sunt corecte?",
+						"Confirm", JOptionPane.YES_NO_OPTION);
+				// If the user is sure and want to proceed:
+				if (reply == JOptionPane.YES_OPTION) {
+					System.out.println(
+							"YES button has been pressed, so we can proceed on completing and saving the Word document");
+					// Setting the default saving location to Desktop:
+					String userDir = System.getProperty("user.home");
+					JFileChooser fileChooser = new JFileChooser(userDir + "/Desktop");
+					// Setting the saving extension to .docx format:
+					fileChooser.setAcceptAllFileFilterUsed(false);
+					fileChooser.setMultiSelectionEnabled(false);
+					FileNameExtensionFilter docxFilter = new FileNameExtensionFilter("Word document (.docx)", ".docx");
+					fileChooser.setFileFilter(docxFilter);
+					// Get the "Save location" dialog response:
+					int reply2 = fileChooser.showSaveDialog(null);
+					// If the Save button is pressed:
+					if (reply2 == JFileChooser.APPROVE_OPTION) {
+						// We are building the file path:
+						String fileName = fileChooser.getSelectedFile().getName() + docxFilter.getExtensions()[0];
+						String savingDir = fileChooser.getCurrentDirectory().toString();
+						String filePath = savingDir + "\\" + fileName;
+						// We are creating and saving an empty docx file:
+						XWPFDocument docx = null;
+						try {
+							// Cream fisierul Word docx:
+							docx = new XWPFDocument();
+							// Salvam documentul:
+							SmartForm.saveWord(filePath, docx);
+							System.out.println("Saved");
+						} catch (Exception e2) {
+							// TODO: handle exception
+							e2.printStackTrace();
+						}
+					}
+					if (reply == JFileChooser.CANCEL_OPTION) {
+						System.out.println("You pressed the Cancel button!");
+					}
+				}
+				System.out.println("You clicked the Save button");
+			}
+		});
+
 		savePanel.add(savetxt);
 		savePanel.add(saveButton);
 		savePanel.setOpaque(false);

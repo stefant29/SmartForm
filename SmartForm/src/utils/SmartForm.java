@@ -26,6 +26,7 @@ public class SmartForm {
 		FileOutputStream outContent = null;
 		try {
 			outContent = new FileOutputStream(filePath);
+			System.out.println(filePath);
 			docx.write(outContent);
 		} finally {
 			outContent.close();
