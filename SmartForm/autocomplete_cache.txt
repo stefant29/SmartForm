@@ -1,3 +1,6 @@
-Nume: Dorel, Mircea, Toncu, Cojocaru
-Prenume: Monica, Vlad, Stefan, Raphael
-E-mail: papi@gmail.com, ureche@hotmail.com, stef29@gmail.com, raf29@gmail.com
+numarInmatriculare: 102% 111% 222% 23333% 2333412% 333% 444% 555% 666% 666666% 777% 888% 989898% 999
+dataIncarcare: 01% 02% 03% 04% 08% 10% 20% 2015% 2016% 31
+adresaIncarcare: adresa1% adresa2% adresa3% adresa4% adresa5
+referintaIncarcare: ref1% ref2% ref3% ref4% ref5
+dataDescarcare: 01% 03% 08% 10% 20% 2015% 2016% drgrdg
+adresaDescarcare: adresa1% adresa2% adresa3% adresa4% adresa5

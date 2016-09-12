@@ -1,7 +1,6 @@
 package utils;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,22 +13,23 @@ import javax.swing.text.BadLocationException;
 
 public class Autocomplete implements DocumentListener {
 
-	private ArrayList<String> numeInput = null;
-	private ArrayList<String> prenumeInput = null;
-	private ArrayList<String> emailInput = null;
-
 	private static enum Mode {
 		INSERT, COMPLETION
 	};
 
 	private JTextField textField;
-	private final List<String> keywords;
+	private List<String> keywords;
 	private Mode mode = Mode.INSERT;
 
 	public Autocomplete(JTextField textField, List<String> keywords) {
 		// read from file
 
 		this.textField = textField;
+		this.keywords = keywords;
+		Collections.sort(keywords);
+	}
+	
+	public void refreshList(List<String> keywords) {
 		this.keywords = keywords;
 		Collections.sort(keywords);
 	}

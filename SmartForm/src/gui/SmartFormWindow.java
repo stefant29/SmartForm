@@ -422,6 +422,13 @@ public class SmartFormWindow extends JFrame {
 							addToList(unloadingDate, dataDescarcare);
 							addToList(unloadingAdress, adresaDescarcare);
 							
+							autoComplete.refreshList(numarInmatriculare);
+							autoComplete2.refreshList(dataIncarcare);
+							autoComplete3.refreshList(adresaIncarcare);
+							autoComplete4.refreshList(referintaIncarcare);
+							autoComplete5.refreshList(dataDescarcare);
+							autoComplete6.refreshList(adresaDescarcare);
+							
 							// save the lists to the cache file
 							saveCacheData();
 
