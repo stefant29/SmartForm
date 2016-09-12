@@ -1,4 +1,5 @@
 package utils;
+
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,27 +19,28 @@ public class Autocomplete implements DocumentListener {
 	private ArrayList<String> emailInput = null;
 
 	private static enum Mode {
-		INSERT,
-		COMPLETION
+		INSERT, COMPLETION
 	};
 
 	private JTextField textField;
 	private final List<String> keywords;
 	private Mode mode = Mode.INSERT;
 
-	public Autocomplete(JTextField textField,List<String> keywords) {
+	public Autocomplete(JTextField textField, List<String> keywords) {
 		// read from file
-		
+
 		this.textField = textField;
 		this.keywords = keywords;
 		Collections.sort(keywords);
 	}
 
 	@Override
-	public void changedUpdate(DocumentEvent ev) { }
+	public void changedUpdate(DocumentEvent ev) {
+	}
 
 	@Override
-	public void removeUpdate(DocumentEvent ev) { }
+	public void removeUpdate(DocumentEvent ev) {
+	}
 
 	@Override
 	public void insertUpdate(DocumentEvent ev) {
@@ -56,7 +58,7 @@ public class Autocomplete implements DocumentListener {
 		// Find where the word starts
 		int w;
 		for (w = pos; w >= 0; w--) {
-			if (!Character.isLetter(content.charAt(w))) {
+			if (!Character.isLetter(content.charAt(w)) && !Character.isDigit(content.charAt(w))) {
 				break;
 			}
 		}
