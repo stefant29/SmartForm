@@ -61,6 +61,11 @@ public class Autocomplete implements DocumentListener {
 			}
 		}
 
+		// Too few chars
+		if (pos - w < 2)
+			return;
+
+		System.out.println("prefix: " + content.substring(w + 1));
 		String prefix = content.substring(w + 1);
 		int n = Collections.binarySearch(keywords, prefix);
 		if (n < 0 && -n <= keywords.size()) {
