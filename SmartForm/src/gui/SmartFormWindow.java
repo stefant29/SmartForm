@@ -39,7 +39,7 @@ import utils.TextReplacer;
 import utils.Autocomplete.CommitAction;
 
 public class SmartFormWindow extends JFrame {
-
+	private final static String docxName = "model_comanda.docx";
 	private static ArrayList<String> numeInput = null;
 	private static ArrayList<String> prenumeInput = null;
 	private static ArrayList<String> emailInput = null;
@@ -276,12 +276,31 @@ public class SmartFormWindow extends JFrame {
 						String filePath = savingDir + "\\" + fileName;
 						// We are creating and saving an empty docx file:
 						XWPFDocument docx = null;
+						// Avem mai multe chestii de completat:
+						TextReplacer rep1 = new TextReplacer("Nr. inmatriculare:", "Nr. inmatriculare: " + plateNo);
+						TextReplacer rep2 = new TextReplacer("Data incarcare:", "Data incarcare: " + loadingDate);
+						TextReplacer rep3 = new TextReplacer("Adresa incarcare:", "Adresa incarcare: " + loadingAdress);
+						TextReplacer rep4 = new TextReplacer("Ref incarcare:", "Ref incarcare: " + ref);
+						TextReplacer rep5 = new TextReplacer("Data de descarcare:", "Data de descarcare: " + unloadingDate);
+						TextReplacer rep6 = new TextReplacer("Adresa de descarcare:", "Adresa de descarcare: " + unloadingAdress);
+						System.out.println("1: " + plateNo);
+						System.out.println("2: " + loadingDate);
+						System.out.println("3: " + loadingAdress);
+						System.out.println("4: " + ref);
+						System.out.println("5: " + unloadingDate);
+						System.out.println("6: " + unloadingAdress);
 						try {
 							// Cream fisierul Word docx:
-							docx = new XWPFDocument();
+							docx = new XWPFDocument(new FileInputStream(SmartFormWindow.docxName));
+							rep1.replace(docx);
+							rep2.replace(docx);
+							rep3.replace(docx);
+							rep4.replace(docx);
+							rep5.replace(docx);
+							rep6.replace(docx);
 							// Salvam documentul:
 							SmartForm.saveWord(filePath, docx);
-							System.out.println("Saved");
+							System.out.println("Saved done!");
 						} catch (Exception e2) {
 							// TODO: handle exception
 							e2.printStackTrace();
@@ -320,43 +339,5 @@ public class SmartFormWindow extends JFrame {
 		window.setResizable(false);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setVisible(true);
-
-		/// BACKEND
-		SmartForm smartForm = new SmartForm();
-
-		// Avem mai multe chestii de completat:
-		TextReplacer r = new TextReplacer("Data incarcare:", "Data incarcare: 23");
-		TextReplacer r1 = new TextReplacer("Adresa incarcare:", "Adresa incarcare: Strada Abatajului, numar 8");
-
-		System.out.println("We are starting!");
-		XWPFDocument docx = null;
-		try {
-			// Cream fisierul Word docx:
-			docx = new XWPFDocument(new FileInputStream(smartForm.fileName));
-			// Apelam metoda de replace pentru fiecare chestie de modificat:
-			// putem face o lista eventual, cumva sa nu mai apelam succesiv
-			r.replace(docx);
-			r1.replace(docx);
-			// Salvam documentul:
-			// putem folosi acelasi nume ca la deschidere, adica sa "modificam"
-			// fisierul:
-			SmartForm.saveWord(SmartForm.fileName, docx);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			try {
-				docx.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		System.out.println("We are done!");
-		////// end of BACKEND
 	}
 }
