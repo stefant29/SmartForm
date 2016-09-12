@@ -59,13 +59,13 @@ public class Autocomplete implements DocumentListener {
 		int w;
 		for (w = pos; w >= 0; w--) {
 			if (!Character.isLetter(content.charAt(w)) && !Character.isDigit(content.charAt(w))) {
+				System.out.println(content.charAt(w));
 				break;
 			}
 		}
-
 		String prefix = content.substring(w + 1);
 		int n = Collections.binarySearch(keywords, prefix);
-		if (n < 0 && -n <= keywords.size()) {
+		if (n < 0 && -n <= keywords.size() && prefix.length() != 0) {
 			String match = keywords.get(-n - 1);
 			if (match.startsWith(prefix)) {
 				// A completion is found
