@@ -8,9 +8,11 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -39,12 +41,14 @@ import utils.TextReplacer;
 import utils.Autocomplete.CommitAction;
 
 public class SmartFormWindow extends JFrame {
-	private final static String docxName = "model_comanda.docx";
-	private static ArrayList<String> numeInput = null;
-	private static ArrayList<String> prenumeInput = null;
-	private static ArrayList<String> emailInput = null;
+	private static ArrayList<String> numarInmatriculare = null;
+	private static ArrayList<String> dataIncarcare = null;
+	private static ArrayList<String> adresaIncarcare = null;
+	private static ArrayList<String> referintaIncarcare = null;
+	private static ArrayList<String> dataDescarcare = null;
+	private static ArrayList<String> adresaDescarcare = null;
 
-	private static void readChacheData() {
+	private static void readCacheData() {
 		try (BufferedReader br = new BufferedReader(new FileReader("autocomplete_cache.txt"))) {
 			StringBuilder sb = new StringBuilder();
 			String line = br.readLine();
@@ -52,15 +56,20 @@ public class SmartFormWindow extends JFrame {
 				// get the name of the line ex: Nume, Prenume, E-mail
 				String[] splitInput = line.split(": ");
 				// get the inputs from that line ex: Stefan, Raphael etc.
-				String[] input = splitInput[1].split(", ");
+				String[] input = splitInput[1].split("% ");
 
-				System.out.println("inputtype: " + splitInput[0]);
-				if (splitInput[0].equals("Nume")) {
-					numeInput = new ArrayList<String>(Arrays.asList(input));
-				} else if (splitInput[0].equals("Prenume")) {
-					prenumeInput = new ArrayList<String>(Arrays.asList(input));
-				} else if (splitInput[0].equals("E-mail")) {
-					emailInput = new ArrayList<String>(Arrays.asList(input));
+				if (splitInput[0].equals("numarInmatriculare")) {
+					numarInmatriculare = new ArrayList<String>(Arrays.asList(input));
+				} else if (splitInput[0].equals("dataIncarcare")) {
+					dataIncarcare = new ArrayList<String>(Arrays.asList(input));
+				} else if (splitInput[0].equals("adresaIncarcare")) {
+					adresaIncarcare = new ArrayList<String>(Arrays.asList(input));
+				} else if (splitInput[0].equals("referintaIncarcare")) {
+					referintaIncarcare = new ArrayList<String>(Arrays.asList(input));
+				} else if (splitInput[0].equals("dataDescarcare")) {
+					dataDescarcare = new ArrayList<String>(Arrays.asList(input));
+				} else if (splitInput[0].equals("adresaDescarcare")) {
+					adresaDescarcare = new ArrayList<String>(Arrays.asList(input));
 				} else {
 					// if the cache file contains input not known
 					System.out.println("Input type not known: " + splitInput[1]);
@@ -71,21 +80,102 @@ public class SmartFormWindow extends JFrame {
 				line = br.readLine();
 			}
 			String everything = sb.toString();
-			System.out.println("text: " + everything);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		for (int i = 0; i < numeInput.size(); i++) {
-			System.out.println(
-					"____" + numeInput.get(i) + "____" + prenumeInput.get(i) + "_____" + emailInput.get(i) + "____");
+		
+		for (int i = 0; i < numarInmatriculare.size(); i++) 
+			System.out.print(numarInmatriculare.get(i) + "\t");
+		System.out.println();
+		
+		for (int i = 0; i < dataIncarcare.size(); i++) 
+			System.out.print(dataIncarcare.get(i) + "\t");
+		System.out.println();
+		
+		for (int i = 0; i < adresaIncarcare.size(); i++) 
+			System.out.print(adresaIncarcare.get(i) + "\t");
+		System.out.println();
+		
+		for (int i = 0; i < referintaIncarcare.size(); i++) 
+			System.out.print(referintaIncarcare.get(i) + "\t");
+		System.out.println();
+		
+		for (int i = 0; i < dataDescarcare.size(); i++) 
+			System.out.print(dataDescarcare.get(i) + "\t");
+		System.out.println();
+		
+		for (int i = 0; i < adresaDescarcare.size(); i++) 
+			System.out.print(adresaDescarcare.get(i) + "\t");
+		System.out.println();
+	}
+
+	/**
+	 * Write specific data to file:
+	 * 
+	 * @param name
+	 *            - type of data
+	 * @param list
+	 *            - list containting data
+	 * @param writer
+	 *            - writer used
+	 * @throws IOException
+	 */
+	private static void writeSpecificData(String name, ArrayList<String> list, BufferedWriter writer)
+			throws IOException {
+		writer.write(name);
+		if (list.size() == 0) {
+			return;
+		} else
+			writer.write(list.get(0) + "%");
+		for (int i = 1; i < list.size() - 1; i++)
+			writer.write(" " + list.get(i) + "%");
+		writer.write(" " + list.get(list.size() - 1) + "\n");
+	}
+
+	/**
+	 * Save the inputs back to the cache file
+	 */
+	private static void saveCacheData() {
+		BufferedWriter writer = null;
+		try {
+			writer = new BufferedWriter(new FileWriter("autocomplete_cache.txt"));
+			writeSpecificData("numarInmatriculare: ", numarInmatriculare, writer);
+			writeSpecificData("dataIncarcare: ", dataIncarcare, writer);
+			writeSpecificData("adresaIncarcare: ", adresaIncarcare, writer);
+			writeSpecificData("referintaIncarcare: ", referintaIncarcare, writer);
+			writeSpecificData("dataDescarcare: ", dataDescarcare, writer);
+			writeSpecificData("adresaDescarcare: ", adresaDescarcare, writer);
+		} catch (IOException e) {
+			System.err.println("write to cache file exeption");
+		} finally {
+			try {
+				if (writer != null)
+					writer.close();
+			} catch (IOException e) {
+				System.err.println("failed to close cache file");
+			}
+		}
+	}
+
+	/**
+	 * Add new inputs to lists
+	 * @param inputString - input to add to list
+	 * @param list - list of elements where the string should be added
+	 */
+	private static void addToList(String inputString, ArrayList<String> list) {
+		String[] split = inputString.split(" ");
+		for (int i = 0; i < split.length; i++) {
+			if (!list.contains(split[i]) && !split[i].equals("")) {
+				list.add(split[i]);
+			}
 		}
 	}
 
 	public static void main(String[] args) throws MalformedURLException {
 		// First read data for autocomplete fields:
-		// readChacheData();
+		readCacheData();
 		final String COMMIT_ACTION = "commit";
 
 		// GUI stuff:
@@ -123,16 +213,7 @@ public class SmartFormWindow extends JFrame {
 		// ---> Start of autocomplete code for plateNoBox:
 		// Without this, cursor always leaves text field
 		plateNoBox.setFocusTraversalKeysEnabled(false);
-		// Keywords for autocomplete:
-		ArrayList<String> plateNoBoxKeywords = new ArrayList<String>(5);
-		plateNoBoxKeywords.add("B");
-		plateNoBoxKeywords.add("BV");
-		plateNoBoxKeywords.add("300");
-		plateNoBoxKeywords.add("RAF");
-		plateNoBoxKeywords.add("autoreactor");
-		plateNoBoxKeywords.add("Stackabuse");
-		plateNoBoxKeywords.add("java");
-		Autocomplete autoComplete = new Autocomplete(plateNoBox, plateNoBoxKeywords);
+		Autocomplete autoComplete = new Autocomplete(plateNoBox, numarInmatriculare);
 		plateNoBox.getDocument().addDocumentListener(autoComplete);
 		// Maps the tab key to the commit action, which finishes the
 		// autocomplete when given a suggestion:
@@ -156,6 +237,16 @@ public class SmartFormWindow extends JFrame {
 		loadingDatePanel.add(loadingDateBox);
 		loadingDatePanel.setSize(30, 20);
 		loadingDatePanel.setOpaque(false);
+		// ---> Start of autocomplete code for loadingDateBox:
+		// Without this, cursor always leaves text field
+		loadingDateBox.setFocusTraversalKeysEnabled(false);
+		Autocomplete autoComplete2 = new Autocomplete(loadingDateBox, dataIncarcare);
+		loadingDateBox.getDocument().addDocumentListener(autoComplete2);
+		// Maps the tab key to the commit action, which finishes the
+		// autocomplete when given a suggestion:
+		loadingDateBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+		loadingDateBox.getActionMap().put(COMMIT_ACTION, autoComplete2.new CommitAction());
+		// <--- end of autocomplete for loadingDateBox
 
 		// Adresa incarcare:
 		FlowLayout loadingAdressLayout = new FlowLayout();
@@ -173,6 +264,16 @@ public class SmartFormWindow extends JFrame {
 		loadingAdressPanel.add(loadingAdressBox);
 		loadingAdressPanel.setSize(30, 20);
 		loadingAdressPanel.setOpaque(false);
+		// ---> Start of autocomplete code for loadingAdressBox:
+		// Without this, cursor always leaves text field
+		loadingAdressBox.setFocusTraversalKeysEnabled(false);
+		Autocomplete autoComplete3 = new Autocomplete(loadingAdressBox, adresaIncarcare);
+		loadingAdressBox.getDocument().addDocumentListener(autoComplete3);
+		// Maps the tab key to the commit action, which finishes the
+		// autocomplete when given a suggestion:
+		loadingAdressBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+		loadingAdressBox.getActionMap().put(COMMIT_ACTION, autoComplete3.new CommitAction());
+		// <--- end of autocomplete for loadingAdressBox
 
 		// Referinta incarcare:
 		FlowLayout refLayout = new FlowLayout();
@@ -190,6 +291,16 @@ public class SmartFormWindow extends JFrame {
 		refPanel.add(refBox);
 		refPanel.setSize(30, 20);
 		refPanel.setOpaque(false);
+		// ---> Start of autocomplete code for refBox:
+		// Without this, cursor always leaves text field
+		refBox.setFocusTraversalKeysEnabled(false);
+		Autocomplete autoComplete4 = new Autocomplete(refBox, referintaIncarcare);
+		refBox.getDocument().addDocumentListener(autoComplete4);
+		// Maps the tab key to the commit action, which finishes the
+		// autocomplete when given a suggestion:
+		refBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+		refBox.getActionMap().put(COMMIT_ACTION, autoComplete4.new CommitAction());
+		// <--- end of autocomplete for refBox
 
 		// Data descarcare:
 		FlowLayout unloadingDateLayout = new FlowLayout();
@@ -207,6 +318,16 @@ public class SmartFormWindow extends JFrame {
 		unloadingDatePanel.add(unloadingDateBox);
 		unloadingDatePanel.setSize(30, 20);
 		unloadingDatePanel.setOpaque(false);
+		// ---> Start of autocomplete code for unloadingDateBox:
+		// Without this, cursor always leaves text field
+		unloadingDateBox.setFocusTraversalKeysEnabled(false);
+		Autocomplete autoComplete5 = new Autocomplete(unloadingDateBox, dataDescarcare);
+		unloadingDateBox.getDocument().addDocumentListener(autoComplete5);
+		// Maps the tab key to the commit action, which finishes the
+		// autocomplete when given a suggestion:
+		unloadingDateBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+		unloadingDateBox.getActionMap().put(COMMIT_ACTION, autoComplete5.new CommitAction());
+		// <--- end of autocomplete for unloadingDateBox
 
 		// Adresa descarcare:
 		FlowLayout unloadingAdressLayout = new FlowLayout();
@@ -224,6 +345,16 @@ public class SmartFormWindow extends JFrame {
 		unloadingAdressPanel.add(unloadingAdressBox);
 		unloadingAdressPanel.setSize(30, 20);
 		unloadingAdressPanel.setOpaque(false);
+		// ---> Start of autocomplete code for unloadingAdressBox:
+		// Without this, cursor always leaves text field
+		unloadingAdressBox.setFocusTraversalKeysEnabled(false);
+		Autocomplete autoComplete6 = new Autocomplete(unloadingAdressBox, adresaDescarcare);
+		unloadingAdressBox.getDocument().addDocumentListener(autoComplete6);
+		// Maps the tab key to the commit action, which finishes the
+		// autocomplete when given a suggestion:
+		unloadingAdressBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+		unloadingAdressBox.getActionMap().put(COMMIT_ACTION, autoComplete6.new CommitAction());
+		// <--- end of autocomplete for unloadingAdressBox
 
 		// Salvare:
 		FlowLayout saveLayout = new FlowLayout();
@@ -246,11 +377,12 @@ public class SmartFormWindow extends JFrame {
 				// We need to get the content of text boxes and complete the
 				// Word doc with it:
 				String plateNo = plateNoBox.getText();
-				String loadingAdress = loadingAdressBox.getText();
-				String unloadingAdress = unloadingAdressBox.getText();
-				String ref = refBox.getText();
 				String loadingDate = loadingDateBox.getText();
+				String loadingAdress = loadingAdressBox.getText();
+				String ref = refBox.getText();
 				String unloadingDate = unloadingDateBox.getText();
+				String unloadingAdress = unloadingAdressBox.getText();
+
 				// Get the dialog reply:
 				int reply = JOptionPane.showConfirmDialog(null, "Sunteti sigur ca valorile introduse sunt corecte?",
 						"Confirm", JOptionPane.YES_NO_OPTION);
@@ -276,31 +408,24 @@ public class SmartFormWindow extends JFrame {
 						String filePath = savingDir + "\\" + fileName;
 						// We are creating and saving an empty docx file:
 						XWPFDocument docx = null;
-						// Avem mai multe chestii de completat:
-						TextReplacer rep1 = new TextReplacer("Nr. inmatriculare:", "Nr. inmatriculare: " + plateNo);
-						TextReplacer rep2 = new TextReplacer("Data incarcare:", "Data incarcare: " + loadingDate);
-						TextReplacer rep3 = new TextReplacer("Adresa incarcare:", "Adresa incarcare: " + loadingAdress);
-						TextReplacer rep4 = new TextReplacer("Ref incarcare:", "Ref incarcare: " + ref);
-						TextReplacer rep5 = new TextReplacer("Data de descarcare:", "Data de descarcare: " + unloadingDate);
-						TextReplacer rep6 = new TextReplacer("Adresa de descarcare:", "Adresa de descarcare: " + unloadingAdress);
-						System.out.println("1: " + plateNo);
-						System.out.println("2: " + loadingDate);
-						System.out.println("3: " + loadingAdress);
-						System.out.println("4: " + ref);
-						System.out.println("5: " + unloadingDate);
-						System.out.println("6: " + unloadingAdress);
 						try {
 							// Cream fisierul Word docx:
-							docx = new XWPFDocument(new FileInputStream(SmartFormWindow.docxName));
-							rep1.replace(docx);
-							rep2.replace(docx);
-							rep3.replace(docx);
-							rep4.replace(docx);
-							rep5.replace(docx);
-							rep6.replace(docx);
+							docx = new XWPFDocument();
 							// Salvam documentul:
 							SmartForm.saveWord(filePath, docx);
-							System.out.println("Saved done!");
+							
+							// save the new inputs to current lists:
+							addToList(plateNo, numarInmatriculare);
+							addToList(loadingDate, dataIncarcare);
+							addToList(loadingAdress, adresaIncarcare);
+							addToList(ref, referintaIncarcare);
+							addToList(unloadingDate, dataDescarcare);
+							addToList(unloadingAdress, adresaDescarcare);
+							
+							// save the lists to the cache file
+							saveCacheData();
+
+							System.out.println("Saved");
 						} catch (Exception e2) {
 							// TODO: handle exception
 							e2.printStackTrace();
@@ -339,5 +464,43 @@ public class SmartFormWindow extends JFrame {
 		window.setResizable(false);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setVisible(true);
+
+		/// BACKEND
+		SmartForm smartForm = new SmartForm();
+
+		// Avem mai multe chestii de completat:
+		TextReplacer r = new TextReplacer("Data incarcare:", "Data incarcare: 23");
+		TextReplacer r1 = new TextReplacer("Adresa incarcare:", "Adresa incarcare: Strada Abatajului, numar 8");
+
+		System.out.println("We are starting!");
+		XWPFDocument docx = null;
+		try {
+			// Cream fisierul Word docx:
+			docx = new XWPFDocument(new FileInputStream(smartForm.fileName));
+			// Apelam metoda de replace pentru fiecare chestie de modificat:
+			// putem face o lista eventual, cumva sa nu mai apelam succesiv
+			r.replace(docx);
+			r1.replace(docx);
+			// Salvam documentul:
+			// putem folosi acelasi nume ca la deschidere, adica sa "modificam"
+			// fisierul:
+			SmartForm.saveWord(SmartForm.fileName, docx);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				docx.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		System.out.println("We are done!");
+		////// end of BACKEND
 	}
 }
