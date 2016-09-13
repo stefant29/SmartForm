@@ -254,6 +254,7 @@ public class SmartFormWindow extends JFrame {
 		noOrderText.setForeground(Color.YELLOW);
 		noOrderText.setOpaque(false);
 		noOrderText.setEditable(false);
+		noOrderText.setHighlighter(null);
 		JTextField noOrderBox = new JTextField(20);
 		noOrderBox.setAlignmentX(RIGHT_ALIGNMENT);
 		noOrderPanel.add(noOrderText);
@@ -282,6 +283,7 @@ public class SmartFormWindow extends JFrame {
 		dateText.setForeground(Color.YELLOW);
 		dateText.setOpaque(false);
 		dateText.setEditable(false);
+		dateText.setHighlighter(null);
 		JTextField dateBox = new JTextField(20);
 		dateBox.setAlignmentX(RIGHT_ALIGNMENT);
 		datePanel.add(dateText);
@@ -310,6 +312,7 @@ public class SmartFormWindow extends JFrame {
 		transporteNameText.setForeground(Color.YELLOW);
 		transporteNameText.setOpaque(false);
 		transporteNameText.setEditable(false);
+		transporteNameText.setHighlighter(null);
 		JTextField transporteNameBox = new JTextField(20);
 		transporteNameBox.setAlignmentX(RIGHT_ALIGNMENT);
 		transporteNamePanel.add(transporteNameText);
@@ -338,6 +341,7 @@ public class SmartFormWindow extends JFrame {
 		contactPersonText.setForeground(Color.YELLOW);
 		contactPersonText.setOpaque(false);
 		contactPersonText.setEditable(false);
+		contactPersonText.setHighlighter(null);
 		JTextField contactPersonBox = new JTextField(20);
 		contactPersonBox.setAlignmentX(RIGHT_ALIGNMENT);
 		contactPersonPanel.add(contactPersonText);
@@ -366,6 +370,7 @@ public class SmartFormWindow extends JFrame {
 		goodsTypeText.setForeground(Color.YELLOW);
 		goodsTypeText.setOpaque(false);
 		goodsTypeText.setEditable(false);
+		goodsTypeText.setHighlighter(null);
 		JTextField goodsTypeBox = new JTextField(20);
 		goodsTypeBox.setAlignmentX(RIGHT_ALIGNMENT);
 		goodsTypePanel.add(goodsTypeText);
@@ -394,6 +399,7 @@ public class SmartFormWindow extends JFrame {
 		priceText.setForeground(Color.YELLOW);
 		priceText.setOpaque(false);
 		priceText.setEditable(false);
+		priceText.setHighlighter(null);
 		JTextField priceBox = new JTextField(20);
 		priceBox.setAlignmentX(RIGHT_ALIGNMENT);
 		pricePanel.add(priceText);
@@ -422,6 +428,7 @@ public class SmartFormWindow extends JFrame {
 		plateNoText.setForeground(Color.YELLOW);
 		plateNoText.setOpaque(false);
 		plateNoText.setEditable(false);
+		plateNoText.setHighlighter(null);
 		JTextField plateNoBox = new JTextField(20);
 		plateNoPanel.add(plateNoText);
 		plateNoPanel.add(plateNoBox);
@@ -449,6 +456,7 @@ public class SmartFormWindow extends JFrame {
 		loadingDateText.setForeground(Color.YELLOW);
 		loadingDateText.setOpaque(false);
 		loadingDateText.setEditable(false);
+		loadingDateText.setHighlighter(null);
 		JTextField loadingDateBox = new JTextField(20);
 		loadingDatePanel.add(loadingDateText);
 		loadingDatePanel.add(loadingDateBox);
@@ -476,6 +484,7 @@ public class SmartFormWindow extends JFrame {
 		loadingAdressText.setForeground(Color.YELLOW);
 		loadingAdressText.setOpaque(false);
 		loadingAdressText.setEditable(false);
+		loadingAdressText.setHighlighter(null);
 		JTextField loadingAdressBox = new JTextField(20);
 		loadingAdressPanel.add(loadingAdressText);
 		loadingAdressPanel.add(loadingAdressBox);
@@ -503,6 +512,7 @@ public class SmartFormWindow extends JFrame {
 		refText.setForeground(Color.YELLOW);
 		refText.setOpaque(false);
 		refText.setEditable(false);
+		refText.setHighlighter(null);
 		JTextField refBox = new JTextField(20);
 		refPanel.add(refText);
 		refPanel.add(refBox);
@@ -530,6 +540,7 @@ public class SmartFormWindow extends JFrame {
 		unloadingDateText.setForeground(Color.YELLOW);
 		unloadingDateText.setOpaque(false);
 		unloadingDateText.setEditable(false);
+		unloadingDateText.setHighlighter(null);
 		JTextField unloadingDateBox = new JTextField(20);
 		unloadingDatePanel.add(unloadingDateText);
 		unloadingDatePanel.add(unloadingDateBox);
@@ -557,6 +568,7 @@ public class SmartFormWindow extends JFrame {
 		unloadingAdressText.setForeground(Color.YELLOW);
 		unloadingAdressText.setOpaque(false);
 		unloadingAdressText.setEditable(false);
+		unloadingAdressText.setHighlighter(null);
 		JTextField unloadingAdressBox = new JTextField(20);
 		unloadingAdressPanel.add(unloadingAdressText);
 		unloadingAdressPanel.add(unloadingAdressBox);
@@ -584,10 +596,12 @@ public class SmartFormWindow extends JFrame {
 		savetxt.setForeground(Color.YELLOW);
 		savetxt.setOpaque(false);
 		savetxt.setEditable(false);
+		savetxt.setHighlighter(null);
 		JButton saveButton = new JButton("Save");
 		saveButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		saveButton.setVerticalTextPosition(SwingConstants.CENTER);
 		saveButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Execute this when the Save button is pressed:
 				// We need to get the content of text boxes and complete the
@@ -692,9 +706,29 @@ public class SmartFormWindow extends JFrame {
 				System.out.println("You clicked the Save button");
 			}
 		});
-
+		JButton clearAllButton = new JButton("Clear all");
+		clearAllButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		clearAllButton.setVerticalTextPosition(SwingConstants.CENTER);
+		clearAllButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				noOrderBox.setText("");
+				dateBox.setText("");
+				transporteNameBox.setText("");
+				contactPersonBox.setText("");
+				plateNoBox.setText("");
+				goodsTypeBox.setText("");
+				loadingDateBox.setText("");
+				loadingAdressBox.setText("");
+				refBox.setText("");
+				unloadingDateBox.setText("");
+				unloadingAdressBox.setText("");
+				priceBox.setText("");
+			}
+		});
 		savePanel.add(savetxt);
 		savePanel.add(saveButton);
+		savePanel.add(clearAllButton);
 		savePanel.setOpaque(false);
 		background.add(noOrderPanel);
 		background.add(datePanel);
