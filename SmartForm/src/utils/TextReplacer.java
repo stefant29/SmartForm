@@ -3,6 +3,7 @@ package utils;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -10,10 +11,19 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 public class TextReplacer {
 	private String searchValue;
 	private String replacement;
+	private boolean italic, bold, underline;
 
 	public TextReplacer(String searchValue, String replacement) {
 		this.searchValue = searchValue;
 		this.replacement = replacement;
+	}
+
+	public TextReplacer(String searchValue, String replacement, boolean italic, boolean bold, boolean underline) {
+		this.searchValue = searchValue;
+		this.replacement = replacement;
+		this.italic = italic;
+		this.bold = bold;
+		this.underline = underline;
 	}
 
 	public XWPFDocument replace(XWPFDocument document) {
@@ -40,7 +50,12 @@ public class TextReplacer {
 
 			XWPFRun newRun = paragraph.insertNewRun(j);
 			newRun.setText(part);
-
+			if(italic)
+				newRun.setItalic(true);
+			if(underline)
+				newRun.setUnderline(UnderlinePatterns.SINGLE);
+			if(bold)
+				newRun.setBold(true);
 			if (j + 1 < replacementTextSplitOnCarriageReturn.length) {
 				newRun.addCarriageReturn();
 			}

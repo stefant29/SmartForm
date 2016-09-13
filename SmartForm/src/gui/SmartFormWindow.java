@@ -753,12 +753,18 @@ public class SmartFormWindow extends JFrame {
 				// Execute this when the Save button is pressed:
 				// We need to get the content of text boxes and complete the
 				// Word doc with it:
+				String orderNo = noOrderBox.getText();
+				String date = dateBox.getText();
+				String transporterName = transporteNameBox.getText();
+				String contactName = contactPersonBox.getText();
 				String plateNo = plateNoBox.getText();
-				String loadingAdress = loadingAdressBox.getText();
-				String unloadingAdress = unloadingAdressBox.getText();
-				String ref = refBox.getText();
+				String goodsType = goodsTypeBox.getText();
 				String loadingDate = loadingDateBox.getText();
+				String loadingAdress = loadingAdressBox.getText();
+				String ref = refBox.getText();
 				String unloadingDate = unloadingDateBox.getText();
+				String unloadingAdress = unloadingAdressBox.getText();
+				String price = priceBox.getText();
 				// Get the dialog reply:
 				int reply = JOptionPane.showConfirmDialog(null, "Sunteti sigur ca valorile introduse sunt corecte?",
 						"Confirm", JOptionPane.YES_NO_OPTION);
@@ -785,20 +791,20 @@ public class SmartFormWindow extends JFrame {
 						// We are creating and saving the docx file:
 						XWPFDocument docx = null;
 						// We are completing the docx file:
-						TextReplacer rep1 = new TextReplacer("Nr. inmatriculare:", "Nr. inmatriculare: " + plateNo);
-						TextReplacer rep2 = new TextReplacer("Data incarcare:", "Data incarcare: " + loadingDate);
-						TextReplacer rep3 = new TextReplacer("Adresa incarcare:", "Adresa incarcare: " + loadingAdress);
-						TextReplacer rep4 = new TextReplacer("Ref incarcare:", "Ref incarcare: " + ref);
-						TextReplacer rep5 = new TextReplacer("Data de descarcare:",
+						TextReplacer rep1 = new TextReplacer("COMANDA NR.:", "COMANDA NR.: " + orderNo);
+						TextReplacer rep2 = new TextReplacer("DINR:", "DIN: " + date);
+						TextReplacer rep3 = new TextReplacer("CATRER:", "CATRE: " + transporterName);
+						TextReplacer rep4 = new TextReplacer("In atentia:", "In atentia: " + contactName);
+						TextReplacer rep5 = new TextReplacer("Nr. inmatriculare:", "Nr. inmatriculare: " + plateNo);
+						TextReplacer rep6 = new TextReplacer("Marfa:", "Marfa: " + goodsType);
+						TextReplacer rep7 = new TextReplacer("Data incarcare:", "Data incarcare: " + loadingDate);
+						TextReplacer rep8 = new TextReplacer("Adresa incarcare:", "Adresa incarcare: " + loadingAdress);
+						TextReplacer rep9 = new TextReplacer("Ref incarcare:", "Ref incarcare: " + ref);
+						TextReplacer rep10 = new TextReplacer("Data de descarcare:",
 								"Data de descarcare: " + unloadingDate);
-						TextReplacer rep6 = new TextReplacer("Adresa de descarcare:",
+						TextReplacer rep11 = new TextReplacer("Adresa de descarcare:",
 								"Adresa de descarcare: " + unloadingAdress);
-						System.out.println("1: " + plateNo);
-						System.out.println("2: " + loadingDate);
-						System.out.println("3: " + loadingAdress);
-						System.out.println("4: " + ref);
-						System.out.println("5: " + unloadingDate);
-						System.out.println("6: " + unloadingAdress);
+						TextReplacer rep12 = new TextReplacer("Pret transport:", "Pret transport: " + price, true, true, true);
 						try {
 							// Cream fisierul Word docx:
 							docx = new XWPFDocument(new FileInputStream(SmartFormWindow.docxName));
@@ -808,6 +814,12 @@ public class SmartFormWindow extends JFrame {
 							rep4.replace(docx);
 							rep5.replace(docx);
 							rep6.replace(docx);
+							rep7.replace(docx);
+							rep8.replace(docx);
+							rep9.replace(docx);
+							rep10.replace(docx);
+							rep11.replace(docx);
+							rep12.replace(docx);
 							// Salvam documentul:
 							SmartForm.saveWord(filePath, docx);
 							System.out.println("Saved done!");
