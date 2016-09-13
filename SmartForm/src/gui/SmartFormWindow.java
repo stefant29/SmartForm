@@ -39,25 +39,41 @@ import utils.TextReplacer;
 public class SmartFormWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private final static String docxName = "model_comanda.docx";
+	
+	private static ArrayList<String> numarComanda = null;
+	private static ArrayList<String> dinData = null;
+	private static ArrayList<String> numeTransportator = null;
+	private static ArrayList<String> inAtentia = null;
 	private static ArrayList<String> numarInmatriculare = null;
+	private static ArrayList<String> tipMarfa = null;
 	private static ArrayList<String> dataIncarcare = null;
 	private static ArrayList<String> adresaIncarcare = null;
 	private static ArrayList<String> referintaIncarcare = null;
 	private static ArrayList<String> dataDescarcare = null;
 	private static ArrayList<String> adresaDescarcare = null;
+	private static ArrayList<String> pretTransport = null;
+
 
 	private static void readCacheData() {
 		try (BufferedReader br = new BufferedReader(new FileReader("autocomplete_cache.txt"))) {
 			StringBuilder sb = new StringBuilder();
 			String line = br.readLine();
 			while (line != null) {
-				// get the name of the line ex: Nume, Prenume, E-mail
 				String[] splitInput = line.split(": ");
-				// get the inputs from that line ex: Stefan, Raphael etc.
 				String[] input = splitInput[1].split("% ");
 
-				if (splitInput[0].equals("numarInmatriculare")) {
+				if (splitInput[0].equals("numarComanda")) {
+					numarComanda = new ArrayList<String>(Arrays.asList(input));
+				} else if (splitInput[0].equals("dinData")) {
+					dinData = new ArrayList<String>(Arrays.asList(input));
+				} else if (splitInput[0].equals("numeTransportator")) {
+					numeTransportator = new ArrayList<String>(Arrays.asList(input));
+				} else if (splitInput[0].equals("inAtentia")) {
+					inAtentia = new ArrayList<String>(Arrays.asList(input));
+				} else if (splitInput[0].equals("numarInmatriculare")) {
 					numarInmatriculare = new ArrayList<String>(Arrays.asList(input));
+				} else if (splitInput[0].equals("tipMarfa")) {
+					tipMarfa = new ArrayList<String>(Arrays.asList(input));
 				} else if (splitInput[0].equals("dataIncarcare")) {
 					dataIncarcare = new ArrayList<String>(Arrays.asList(input));
 				} else if (splitInput[0].equals("adresaIncarcare")) {
@@ -68,6 +84,8 @@ public class SmartFormWindow extends JFrame {
 					dataDescarcare = new ArrayList<String>(Arrays.asList(input));
 				} else if (splitInput[0].equals("adresaDescarcare")) {
 					adresaDescarcare = new ArrayList<String>(Arrays.asList(input));
+				} else if (splitInput[0].equals("pretTransport")) {
+					pretTransport = new ArrayList<String>(Arrays.asList(input));
 				} else {
 					// if the cache file contains input not known
 					System.out.println("Input type not known: " + splitInput[1]);
@@ -83,10 +101,30 @@ public class SmartFormWindow extends JFrame {
 			e.printStackTrace();
 		}
 
+		for (int i = 0; i < numarComanda.size(); i++)
+			System.out.print(numarComanda.get(i) + "\t");
+		System.out.println();
+		
+		for (int i = 0; i < dinData.size(); i++)
+			System.out.print(dinData.get(i) + "\t");
+		System.out.println();
+		
+		for (int i = 0; i < numeTransportator.size(); i++)
+			System.out.print(numeTransportator.get(i) + "\t");
+		System.out.println();
+		
+		for (int i = 0; i < inAtentia.size(); i++)
+			System.out.print(inAtentia.get(i) + "\t");
+		System.out.println();
+		
 		for (int i = 0; i < numarInmatriculare.size(); i++)
 			System.out.print(numarInmatriculare.get(i) + "\t");
 		System.out.println();
 
+		for (int i = 0; i < tipMarfa.size(); i++)
+			System.out.print(tipMarfa.get(i) + "\t");
+		System.out.println();
+		
 		for (int i = 0; i < dataIncarcare.size(); i++)
 			System.out.print(dataIncarcare.get(i) + "\t");
 		System.out.println();
@@ -106,6 +144,11 @@ public class SmartFormWindow extends JFrame {
 		for (int i = 0; i < adresaDescarcare.size(); i++)
 			System.out.print(adresaDescarcare.get(i) + "\t");
 		System.out.println();
+		
+		for (int i = 0; i < pretTransport.size(); i++)
+			System.out.print(pretTransport.get(i) + "\t");
+		System.out.println();
+		
 	}
 
 	/**
@@ -138,12 +181,18 @@ public class SmartFormWindow extends JFrame {
 		BufferedWriter writer = null;
 		try {
 			writer = new BufferedWriter(new FileWriter("autocomplete_cache.txt"));
+			writeSpecificData("numarComanda: ", numarComanda, writer);
+			writeSpecificData("dinData: ", dinData, writer);
+			writeSpecificData("numeTransportator: ", numeTransportator, writer);
+			writeSpecificData("inAtentia: ", inAtentia, writer);
 			writeSpecificData("numarInmatriculare: ", numarInmatriculare, writer);
+			writeSpecificData("tipMarfa: ", tipMarfa, writer);
 			writeSpecificData("dataIncarcare: ", dataIncarcare, writer);
 			writeSpecificData("adresaIncarcare: ", adresaIncarcare, writer);
 			writeSpecificData("referintaIncarcare: ", referintaIncarcare, writer);
 			writeSpecificData("dataDescarcare: ", dataDescarcare, writer);
 			writeSpecificData("adresaDescarcare: ", adresaDescarcare, writer);
+			writeSpecificData("pretTransport: ", pretTransport, writer);
 		} catch (IOException e) {
 			System.err.println("write to cache file exeption");
 		} finally {
@@ -211,6 +260,16 @@ public class SmartFormWindow extends JFrame {
 		noOrderPanel.add(noOrderBox);
 		noOrderPanel.setSize(30, 20);
 		noOrderPanel.setOpaque(false);
+		// ---> Start of autocomplete code for noOrderBox:
+		// Without this, cursor always leaves text field
+		noOrderBox.setFocusTraversalKeysEnabled(false);
+		Autocomplete autoComplete12 = new Autocomplete(noOrderBox, numarComanda);
+		noOrderBox.getDocument().addDocumentListener(autoComplete12);
+		// Maps the tab key to the commit action, which finishes the
+		// autocomplete when given a suggestion:
+		noOrderBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+		noOrderBox.getActionMap().put(COMMIT_ACTION, autoComplete12.new CommitAction());
+		// <--- end of autocomplete for noOrderBox
 
 		// Din data:
 		FlowLayout dateLayout = new FlowLayout();
@@ -229,6 +288,16 @@ public class SmartFormWindow extends JFrame {
 		datePanel.add(dateBox);
 		datePanel.setSize(30, 20);
 		datePanel.setOpaque(false);
+		// ---> Start of autocomplete code for dateBox:
+		// Without this, cursor always leaves text field
+		dateBox.setFocusTraversalKeysEnabled(false);
+		Autocomplete autoComplete11 = new Autocomplete(dateBox, dinData);
+		dateBox.getDocument().addDocumentListener(autoComplete11);
+		// Maps the tab key to the commit action, which finishes the
+		// autocomplete when given a suggestion:
+		dateBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+		dateBox.getActionMap().put(COMMIT_ACTION, autoComplete11.new CommitAction());
+		// <--- end of autocomplete for dateBox
 
 		// Nume transportator:
 		FlowLayout transporteNameLayout = new FlowLayout();
@@ -247,6 +316,16 @@ public class SmartFormWindow extends JFrame {
 		transporteNamePanel.add(transporteNameBox);
 		transporteNamePanel.setSize(30, 20);
 		transporteNamePanel.setOpaque(false);
+		// ---> Start of autocomplete code for transporteNameBox:
+		// Without this, cursor always leaves text field
+		transporteNameBox.setFocusTraversalKeysEnabled(false);
+		Autocomplete autoComplete10 = new Autocomplete(transporteNameBox, numeTransportator);
+		transporteNameBox.getDocument().addDocumentListener(autoComplete10);
+		// Maps the tab key to the commit action, which finishes the
+		// autocomplete when given a suggestion:
+		transporteNameBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+		transporteNameBox.getActionMap().put(COMMIT_ACTION, autoComplete10.new CommitAction());
+		// <--- end of autocomplete for contactPersonBox
 
 		// In atentia:
 		FlowLayout contactPersonLayout = new FlowLayout();
@@ -265,6 +344,16 @@ public class SmartFormWindow extends JFrame {
 		contactPersonPanel.add(contactPersonBox);
 		contactPersonPanel.setSize(30, 20);
 		contactPersonPanel.setOpaque(false);
+		// ---> Start of autocomplete code for contactPersonBox:
+		// Without this, cursor always leaves text field
+		contactPersonBox.setFocusTraversalKeysEnabled(false);
+		Autocomplete autoComplete9 = new Autocomplete(contactPersonBox, inAtentia);
+		contactPersonBox.getDocument().addDocumentListener(autoComplete9);
+		// Maps the tab key to the commit action, which finishes the
+		// autocomplete when given a suggestion:
+		contactPersonBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+		contactPersonBox.getActionMap().put(COMMIT_ACTION, autoComplete9.new CommitAction());
+		// <--- end of autocomplete for contactPersonBox
 
 		// Tip marfa:
 		FlowLayout goodsTypeLayout = new FlowLayout();
@@ -283,6 +372,16 @@ public class SmartFormWindow extends JFrame {
 		goodsTypePanel.add(goodsTypeBox);
 		goodsTypePanel.setSize(30, 20);
 		goodsTypePanel.setOpaque(false);
+		// ---> Start of autocomplete code for goodsTypeBox:
+		// Without this, cursor always leaves text field
+		goodsTypeBox.setFocusTraversalKeysEnabled(false);
+		Autocomplete autoComplete8 = new Autocomplete(goodsTypeBox, tipMarfa);
+		goodsTypeBox.getDocument().addDocumentListener(autoComplete8);
+		// Maps the tab key to the commit action, which finishes the
+		// autocomplete when given a suggestion:
+		goodsTypeBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+		goodsTypeBox.getActionMap().put(COMMIT_ACTION, autoComplete8.new CommitAction());
+		// <--- end of autocomplete for goodsTypeBox
 
 		// Pret transport:
 		FlowLayout priceLayout = new FlowLayout();
@@ -301,6 +400,16 @@ public class SmartFormWindow extends JFrame {
 		pricePanel.add(priceBox);
 		pricePanel.setSize(30, 20);
 		pricePanel.setOpaque(false);
+		// ---> Start of autocomplete code for priceBox:
+		// Without this, cursor always leaves text field
+		priceBox.setFocusTraversalKeysEnabled(false);
+		Autocomplete autoComplete7 = new Autocomplete(priceBox, pretTransport);
+		priceBox.getDocument().addDocumentListener(autoComplete7);
+		// Maps the tab key to the commit action, which finishes the
+		// autocomplete when given a suggestion:
+		priceBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+		priceBox.getActionMap().put(COMMIT_ACTION, autoComplete7.new CommitAction());
+		// <--- end of autocomplete for priceBox
 
 		// Numar inmatriculare:
 		FlowLayout plateNoLayout = new FlowLayout();
@@ -541,20 +650,32 @@ public class SmartFormWindow extends JFrame {
 							// Salvam documentul:
 							SmartForm.saveWord(filePath, docx);
 							System.out.println("Saved done!");
+							
 							// Save the new inputs to current lists:
+							addToList(noOrderBox.getText(), numarComanda);
+							addToList(dateBox.getText(), dinData);
+							addToList(transporteNameBox.getText(), numeTransportator);
+							addToList(contactPersonBox.getText(), inAtentia);
 							addToList(plateNo, numarInmatriculare);
+							addToList(goodsTypeBox.getText(), tipMarfa);
 							addToList(loadingDate, dataIncarcare);
 							addToList(loadingAdress, adresaIncarcare);
 							addToList(ref, referintaIncarcare);
 							addToList(unloadingDate, dataDescarcare);
-							addToList(unloadingAdress, adresaDescarcare);
-
+							addToList(priceBox.getText(), pretTransport);
+							
+							autoComplete12.refreshList(numarComanda);
+							autoComplete11.refreshList(dinData);
+							autoComplete10.refreshList(numeTransportator);
+							autoComplete9.refreshList(inAtentia);
 							autoComplete.refreshList(numarInmatriculare);
+							autoComplete8.refreshList(tipMarfa);
 							autoComplete2.refreshList(dataIncarcare);
 							autoComplete3.refreshList(adresaIncarcare);
 							autoComplete4.refreshList(referintaIncarcare);
 							autoComplete5.refreshList(dataDescarcare);
 							autoComplete6.refreshList(adresaDescarcare);
+							autoComplete7.refreshList(pretTransport);
 
 							// save the lists to the cache file
 							saveCacheData();
