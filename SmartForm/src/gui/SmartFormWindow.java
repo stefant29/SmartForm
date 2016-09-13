@@ -15,16 +15,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -38,9 +35,10 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import utils.Autocomplete;
 import utils.SmartForm;
 import utils.TextReplacer;
-import utils.Autocomplete.CommitAction;
 
 public class SmartFormWindow extends JFrame {
+	private static final long serialVersionUID = 1L;
+	private final static String docxName = "model_comanda.docx";
 	private static ArrayList<String> numarInmatriculare = null;
 	private static ArrayList<String> dataIncarcare = null;
 	private static ArrayList<String> adresaIncarcare = null;
@@ -79,34 +77,33 @@ public class SmartFormWindow extends JFrame {
 				sb.append(System.lineSeparator());
 				line = br.readLine();
 			}
-			String everything = sb.toString();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		for (int i = 0; i < numarInmatriculare.size(); i++) 
+
+		for (int i = 0; i < numarInmatriculare.size(); i++)
 			System.out.print(numarInmatriculare.get(i) + "\t");
 		System.out.println();
-		
-		for (int i = 0; i < dataIncarcare.size(); i++) 
+
+		for (int i = 0; i < dataIncarcare.size(); i++)
 			System.out.print(dataIncarcare.get(i) + "\t");
 		System.out.println();
-		
-		for (int i = 0; i < adresaIncarcare.size(); i++) 
+
+		for (int i = 0; i < adresaIncarcare.size(); i++)
 			System.out.print(adresaIncarcare.get(i) + "\t");
 		System.out.println();
-		
-		for (int i = 0; i < referintaIncarcare.size(); i++) 
+
+		for (int i = 0; i < referintaIncarcare.size(); i++)
 			System.out.print(referintaIncarcare.get(i) + "\t");
 		System.out.println();
-		
-		for (int i = 0; i < dataDescarcare.size(); i++) 
+
+		for (int i = 0; i < dataDescarcare.size(); i++)
 			System.out.print(dataDescarcare.get(i) + "\t");
 		System.out.println();
-		
-		for (int i = 0; i < adresaDescarcare.size(); i++) 
+
+		for (int i = 0; i < adresaDescarcare.size(); i++)
 			System.out.print(adresaDescarcare.get(i) + "\t");
 		System.out.println();
 	}
@@ -161,8 +158,11 @@ public class SmartFormWindow extends JFrame {
 
 	/**
 	 * Add new inputs to lists
-	 * @param inputString - input to add to list
-	 * @param list - list of elements where the string should be added
+	 * 
+	 * @param inputString
+	 *            - input to add to list
+	 * @param list
+	 *            - list of elements where the string should be added
 	 */
 	private static void addToList(String inputString, ArrayList<String> list) {
 		String[] split = inputString.split(" ");
@@ -182,7 +182,7 @@ public class SmartFormWindow extends JFrame {
 		// Creating the main window:
 		SmartFormWindow window = new SmartFormWindow();
 		// Setting the window's dimensions:
-		Dimension dim = new Dimension(600, 400);
+		Dimension dim = new Dimension(600, 700);
 		window.setSize(dim);
 		// Setting the window's title:
 		window.setTitle("SmartForm");
@@ -191,8 +191,116 @@ public class SmartFormWindow extends JFrame {
 		window.setIconImage(icon.getImage());
 		// Setting the window's background:
 		Background background = new Background("ubuntu.png", dim);
-		background.setSize(400, 200);
+		background.setSize(600, 700);
 		background.repaint();
+
+		// Numar comanda:
+		FlowLayout noOrderLayout = new FlowLayout();
+		noOrderLayout.setAlignment(FlowLayout.LEFT);
+		noOrderLayout.setHgap(20);
+		JPanel noOrderPanel = new JPanel(noOrderLayout);
+		JTextArea noOrderText = new JTextArea("Numar comanda: ");
+		Font noOrderFont = new Font("Verdana", Font.BOLD, 22);
+		noOrderText.setFont(noOrderFont);
+		noOrderText.setForeground(Color.YELLOW);
+		noOrderText.setOpaque(false);
+		noOrderText.setEditable(false);
+		JTextField noOrderBox = new JTextField(20);
+		noOrderBox.setAlignmentX(RIGHT_ALIGNMENT);
+		noOrderPanel.add(noOrderText);
+		noOrderPanel.add(noOrderBox);
+		noOrderPanel.setSize(30, 20);
+		noOrderPanel.setOpaque(false);
+
+		// Din data:
+		FlowLayout dateLayout = new FlowLayout();
+		dateLayout.setAlignment(FlowLayout.LEFT);
+		dateLayout.setHgap(20);
+		JPanel datePanel = new JPanel(dateLayout);
+		JTextArea dateText = new JTextArea("Din data: ");
+		Font dateFont = new Font("Verdana", Font.BOLD, 22);
+		dateText.setFont(dateFont);
+		dateText.setForeground(Color.YELLOW);
+		dateText.setOpaque(false);
+		dateText.setEditable(false);
+		JTextField dateBox = new JTextField(20);
+		dateBox.setAlignmentX(RIGHT_ALIGNMENT);
+		datePanel.add(dateText);
+		datePanel.add(dateBox);
+		datePanel.setSize(30, 20);
+		datePanel.setOpaque(false);
+
+		// Nume transportator:
+		FlowLayout transporteNameLayout = new FlowLayout();
+		transporteNameLayout.setAlignment(FlowLayout.LEFT);
+		transporteNameLayout.setHgap(20);
+		JPanel transporteNamePanel = new JPanel(transporteNameLayout);
+		JTextArea transporteNameText = new JTextArea("Nume transportator: ");
+		Font transporteNameFont = new Font("Verdana", Font.BOLD, 22);
+		transporteNameText.setFont(transporteNameFont);
+		transporteNameText.setForeground(Color.YELLOW);
+		transporteNameText.setOpaque(false);
+		transporteNameText.setEditable(false);
+		JTextField transporteNameBox = new JTextField(20);
+		transporteNameBox.setAlignmentX(RIGHT_ALIGNMENT);
+		transporteNamePanel.add(transporteNameText);
+		transporteNamePanel.add(transporteNameBox);
+		transporteNamePanel.setSize(30, 20);
+		transporteNamePanel.setOpaque(false);
+
+		// In atentia:
+		FlowLayout contactPersonLayout = new FlowLayout();
+		contactPersonLayout.setAlignment(FlowLayout.LEFT);
+		contactPersonLayout.setHgap(20);
+		JPanel contactPersonPanel = new JPanel(contactPersonLayout);
+		JTextArea contactPersonText = new JTextArea("In atentia: ");
+		Font contactPersonFont = new Font("Verdana", Font.BOLD, 22);
+		contactPersonText.setFont(contactPersonFont);
+		contactPersonText.setForeground(Color.YELLOW);
+		contactPersonText.setOpaque(false);
+		contactPersonText.setEditable(false);
+		JTextField contactPersonBox = new JTextField(20);
+		contactPersonBox.setAlignmentX(RIGHT_ALIGNMENT);
+		contactPersonPanel.add(contactPersonText);
+		contactPersonPanel.add(contactPersonBox);
+		contactPersonPanel.setSize(30, 20);
+		contactPersonPanel.setOpaque(false);
+
+		// Tip marfa:
+		FlowLayout goodsTypeLayout = new FlowLayout();
+		goodsTypeLayout.setAlignment(FlowLayout.LEFT);
+		goodsTypeLayout.setHgap(20);
+		JPanel goodsTypePanel = new JPanel(goodsTypeLayout);
+		JTextArea goodsTypeText = new JTextArea("Tip marfa: ");
+		Font goodsTypeFont = new Font("Verdana", Font.BOLD, 22);
+		goodsTypeText.setFont(goodsTypeFont);
+		goodsTypeText.setForeground(Color.YELLOW);
+		goodsTypeText.setOpaque(false);
+		goodsTypeText.setEditable(false);
+		JTextField goodsTypeBox = new JTextField(20);
+		goodsTypeBox.setAlignmentX(RIGHT_ALIGNMENT);
+		goodsTypePanel.add(goodsTypeText);
+		goodsTypePanel.add(goodsTypeBox);
+		goodsTypePanel.setSize(30, 20);
+		goodsTypePanel.setOpaque(false);
+
+		// Pret transport:
+		FlowLayout priceLayout = new FlowLayout();
+		priceLayout.setAlignment(FlowLayout.LEFT);
+		priceLayout.setHgap(20);
+		JPanel pricePanel = new JPanel(priceLayout);
+		JTextArea priceText = new JTextArea("Pret transport: ");
+		Font priceFont = new Font("Verdana", Font.BOLD, 22);
+		priceText.setFont(priceFont);
+		priceText.setForeground(Color.YELLOW);
+		priceText.setOpaque(false);
+		priceText.setEditable(false);
+		JTextField priceBox = new JTextField(20);
+		priceBox.setAlignmentX(RIGHT_ALIGNMENT);
+		pricePanel.add(priceText);
+		pricePanel.add(priceBox);
+		pricePanel.setSize(30, 20);
+		pricePanel.setOpaque(false);
 
 		// Numar inmatriculare:
 		FlowLayout plateNoLayout = new FlowLayout();
@@ -371,18 +479,16 @@ public class SmartFormWindow extends JFrame {
 		saveButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		saveButton.setVerticalTextPosition(SwingConstants.CENTER);
 		saveButton.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				// Execute this when the Save button is pressed:
 				// We need to get the content of text boxes and complete the
 				// Word doc with it:
 				String plateNo = plateNoBox.getText();
-				String loadingDate = loadingDateBox.getText();
 				String loadingAdress = loadingAdressBox.getText();
-				String ref = refBox.getText();
-				String unloadingDate = unloadingDateBox.getText();
 				String unloadingAdress = unloadingAdressBox.getText();
-
+				String ref = refBox.getText();
+				String loadingDate = loadingDateBox.getText();
+				String unloadingDate = unloadingDateBox.getText();
 				// Get the dialog reply:
 				int reply = JOptionPane.showConfirmDialog(null, "Sunteti sigur ca valorile introduse sunt corecte?",
 						"Confirm", JOptionPane.YES_NO_OPTION);
@@ -406,36 +512,56 @@ public class SmartFormWindow extends JFrame {
 						String fileName = fileChooser.getSelectedFile().getName() + docxFilter.getExtensions()[0];
 						String savingDir = fileChooser.getCurrentDirectory().toString();
 						String filePath = savingDir + "\\" + fileName;
-						// We are creating and saving an empty docx file:
+						// We are creating and saving the docx file:
 						XWPFDocument docx = null;
+						// We are completing the docx file:
+						TextReplacer rep1 = new TextReplacer("Nr. inmatriculare:", "Nr. inmatriculare: " + plateNo);
+						TextReplacer rep2 = new TextReplacer("Data incarcare:", "Data incarcare: " + loadingDate);
+						TextReplacer rep3 = new TextReplacer("Adresa incarcare:", "Adresa incarcare: " + loadingAdress);
+						TextReplacer rep4 = new TextReplacer("Ref incarcare:", "Ref incarcare: " + ref);
+						TextReplacer rep5 = new TextReplacer("Data de descarcare:",
+								"Data de descarcare: " + unloadingDate);
+						TextReplacer rep6 = new TextReplacer("Adresa de descarcare:",
+								"Adresa de descarcare: " + unloadingAdress);
+						System.out.println("1: " + plateNo);
+						System.out.println("2: " + loadingDate);
+						System.out.println("3: " + loadingAdress);
+						System.out.println("4: " + ref);
+						System.out.println("5: " + unloadingDate);
+						System.out.println("6: " + unloadingAdress);
 						try {
 							// Cream fisierul Word docx:
-							docx = new XWPFDocument();
+							docx = new XWPFDocument(new FileInputStream(SmartFormWindow.docxName));
+							rep1.replace(docx);
+							rep2.replace(docx);
+							rep3.replace(docx);
+							rep4.replace(docx);
+							rep5.replace(docx);
+							rep6.replace(docx);
 							// Salvam documentul:
 							SmartForm.saveWord(filePath, docx);
-							
-							// save the new inputs to current lists:
+							System.out.println("Saved done!");
+							// Save the new inputs to current lists:
 							addToList(plateNo, numarInmatriculare);
 							addToList(loadingDate, dataIncarcare);
 							addToList(loadingAdress, adresaIncarcare);
 							addToList(ref, referintaIncarcare);
 							addToList(unloadingDate, dataDescarcare);
 							addToList(unloadingAdress, adresaDescarcare);
-							
+
 							autoComplete.refreshList(numarInmatriculare);
 							autoComplete2.refreshList(dataIncarcare);
 							autoComplete3.refreshList(adresaIncarcare);
 							autoComplete4.refreshList(referintaIncarcare);
 							autoComplete5.refreshList(dataDescarcare);
 							autoComplete6.refreshList(adresaDescarcare);
-							
+
 							// save the lists to the cache file
 							saveCacheData();
 
 							System.out.println("Saved");
-						} catch (Exception e2) {
-							// TODO: handle exception
-							e2.printStackTrace();
+						} catch (Exception err) {
+							err.printStackTrace();
 						}
 					}
 					if (reply == JFileChooser.CANCEL_OPTION) {
@@ -449,65 +575,31 @@ public class SmartFormWindow extends JFrame {
 		savePanel.add(savetxt);
 		savePanel.add(saveButton);
 		savePanel.setOpaque(false);
-
+		background.add(noOrderPanel);
+		background.add(datePanel);
+		background.add(transporteNamePanel);
+		background.add(contactPersonPanel);
 		background.add(plateNoPanel);
+		background.add(goodsTypePanel);
 		background.add(loadingDatePanel);
 		background.add(loadingAdressPanel);
 		background.add(refPanel);
 		background.add(unloadingDatePanel);
 		background.add(unloadingAdressPanel);
+		background.add(pricePanel);
 		background.add(savePanel);
-
 		// Setam layout-ul:
 		GridLayout layout = new GridLayout();
 		// Setam alinierea la stanga:
-		layout.setColumns(2);
-		layout.setRows(7);
+		layout.setColumns(1);
+		layout.setRows(13);
 		// Setam marginile de orizontale si verticale:
 		layout.setHgap(30);
-		layout.setVgap(30);
+		layout.setVgap(5);
 		background.setLayout(layout);
 		window.add(background);
 		window.setResizable(false);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setVisible(true);
-
-		/// BACKEND
-		SmartForm smartForm = new SmartForm();
-
-		// Avem mai multe chestii de completat:
-		TextReplacer r = new TextReplacer("Data incarcare:", "Data incarcare: 23");
-		TextReplacer r1 = new TextReplacer("Adresa incarcare:", "Adresa incarcare: Strada Abatajului, numar 8");
-
-		System.out.println("We are starting!");
-		XWPFDocument docx = null;
-		try {
-			// Cream fisierul Word docx:
-			docx = new XWPFDocument(new FileInputStream(smartForm.fileName));
-			// Apelam metoda de replace pentru fiecare chestie de modificat:
-			// putem face o lista eventual, cumva sa nu mai apelam succesiv
-			r.replace(docx);
-			r1.replace(docx);
-			// Salvam documentul:
-			// putem folosi acelasi nume ca la deschidere, adica sa "modificam"
-			// fisierul:
-			SmartForm.saveWord(SmartForm.fileName, docx);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			try {
-				docx.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		System.out.println("We are done!");
-		////// end of BACKEND
 	}
 }

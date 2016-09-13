@@ -1,6 +1,6 @@
-numarInmatriculare: 102% 111% 222% 23333% 2333412% 333% 444% 555% 666% 666666% 777% 888% 989898% 999
-dataIncarcare: 01% 02% 03% 04% 08% 10% 20% 2015% 2016% 31
-adresaIncarcare: adresa1% adresa2% adresa3% adresa4% adresa5
-referintaIncarcare: ref1% ref2% ref3% ref4% ref5
-dataDescarcare: 01% 03% 08% 10% 20% 2015% 2016% drgrdg
-adresaDescarcare: adresa1% adresa2% adresa3% adresa4% adresa5
+numarInmatriculare: 102% 111% 222% 23333% 2333412% 333% 444% 500% 555% 666% 666666% 777% 888% 989898% 999% B% BOS% RAF
+dataIncarcare: 01% 02% 03% 04% 05% 08% 10% 14% 20% 2015% 2016% 31
+adresaIncarcare: Str% adresa1% adresa2% adresa3% adresa4% adresa5
+referintaIncarcare: 124124124% R% ref1% ref2% ref3% ref4% ref5
+dataDescarcare: 01% 03% 08% 10% 15% 20% 2015% 2016% drgrdg
+adresaDescarcare: Abatajului,% Bucuresti,% Romania% Strada% adresa1% adresa2% adresa3% adresa4% adresa5

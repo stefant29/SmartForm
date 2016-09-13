@@ -22,8 +22,6 @@ public class Autocomplete implements DocumentListener {
 	private Mode mode = Mode.INSERT;
 
 	public Autocomplete(JTextField textField, List<String> keywords) {
-		// read from file
-
 		this.textField = textField;
 		this.keywords = keywords;
 		Collections.sort(keywords);
