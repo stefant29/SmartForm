@@ -8,6 +8,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedReader;
@@ -244,6 +246,21 @@ public class SmartFormWindow extends JFrame {
 		Background background = new Background("ubuntu.png", dim);
 		background.setSize(600, 700);
 		background.repaint();
+		
+		
+		KeyListener keyListener = new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			@Override
+			public void keyReleased(KeyEvent e) {}
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == 9 ) {
+					System.out.println("Key pressed: TAB");
+				}
+				System.out.println("code: " + e.getKeyCode());
+			}
+		};
 
 		// Numar comanda:
 		FlowLayout noOrderLayout = new FlowLayout();
@@ -258,7 +275,10 @@ public class SmartFormWindow extends JFrame {
 		noOrderText.setEditable(false);
 		noOrderText.setHighlighter(null);
 		noOrderText.setPreferredSize(new Dimension(280, 30));
+		noOrderText.setFocusable(false);
 		JTextField noOrderBox = new JTextField(20);
+		noOrderBox.setFocusable(true);
+		noOrderBox.addKeyListener(keyListener);
 		noOrderBox.setAlignmentX(RIGHT_ALIGNMENT);
 		JButton clearNoOrderButton = new JButton("X");
 		clearNoOrderButton.setMargin(new Insets(0, 0, 0, 0));
@@ -277,7 +297,7 @@ public class SmartFormWindow extends JFrame {
 		noOrderPanel.setOpaque(false);
 		// ---> Start of autocomplete code for noOrderBox:
 		// Without this, cursor always leaves text field
-		noOrderBox.setFocusTraversalKeysEnabled(false);
+		noOrderBox.setFocusTraversalKeysEnabled(true);
 		Autocomplete autoComplete12 = new Autocomplete(noOrderBox, numarComanda);
 		noOrderBox.getDocument().addDocumentListener(autoComplete12);
 		// Maps the tab key to the commit action, which finishes the
@@ -299,7 +319,10 @@ public class SmartFormWindow extends JFrame {
 		dateText.setEditable(false);
 		dateText.setHighlighter(null);
 		dateText.setPreferredSize(new Dimension(280, 30));
+		dateText.setFocusable(false);
 		JTextField dateBox = new JTextField(20);
+		dateBox.setFocusable(true);
+		dateBox.addKeyListener(keyListener);
 		dateBox.setAlignmentX(RIGHT_ALIGNMENT);
 		JButton clearDateButton = new JButton("X");
 		clearDateButton.setMargin(new Insets(0, 0, 0, 0));
@@ -340,7 +363,10 @@ public class SmartFormWindow extends JFrame {
 		transporteNameText.setEditable(false);
 		transporteNameText.setHighlighter(null);
 		transporteNameText.setPreferredSize(new Dimension(280, 30));
+		transporteNameText.setFocusable(false);
 		JTextField transporteNameBox = new JTextField(20);
+		transporteNameBox.setFocusable(true);
+		transporteNameBox.addKeyListener(keyListener);
 		transporteNameBox.setAlignmentX(RIGHT_ALIGNMENT);
 		JButton clearTransporterNameButton = new JButton("X");
 		clearTransporterNameButton.setMargin(new Insets(0, 0, 0, 0));
@@ -381,7 +407,9 @@ public class SmartFormWindow extends JFrame {
 		contactPersonText.setEditable(false);
 		contactPersonText.setHighlighter(null);
 		contactPersonText.setPreferredSize(new Dimension(280, 30));
+		contactPersonText.setFocusable(false);
 		JTextField contactPersonBox = new JTextField(20);
+		contactPersonBox.setFocusable(true);
 		contactPersonBox.setAlignmentX(RIGHT_ALIGNMENT);
 		JButton clearContactPersonButton = new JButton("X");
 		clearContactPersonButton.setMargin(new Insets(0, 0, 0, 0));
@@ -422,7 +450,9 @@ public class SmartFormWindow extends JFrame {
 		goodsTypeText.setEditable(false);
 		goodsTypeText.setHighlighter(null);
 		goodsTypeText.setPreferredSize(new Dimension(280, 30));
+		goodsTypeText.setFocusable(false);
 		JTextField goodsTypeBox = new JTextField(20);
+		goodsTypeBox.setFocusable(true);
 		goodsTypeBox.setAlignmentX(RIGHT_ALIGNMENT);
 		JButton clearGoodsTypeButton = new JButton("X");
 		clearGoodsTypeButton.setMargin(new Insets(0, 0, 0, 0));
@@ -463,7 +493,9 @@ public class SmartFormWindow extends JFrame {
 		priceText.setEditable(false);
 		priceText.setHighlighter(null);
 		priceText.setPreferredSize(new Dimension(280, 30));
+		priceText.setFocusable(false);
 		JTextField priceBox = new JTextField(20);
+		priceBox.setFocusable(true);
 		priceBox.setAlignmentX(RIGHT_ALIGNMENT);
 		JButton clearPriceButton = new JButton("X");
 		clearPriceButton.setMargin(new Insets(0, 0, 0, 0));
@@ -504,7 +536,9 @@ public class SmartFormWindow extends JFrame {
 		plateNoText.setEditable(false);
 		plateNoText.setHighlighter(null);
 		plateNoText.setPreferredSize(new Dimension(280, 30));
+		plateNoText.setFocusable(false);
 		JTextField plateNoBox = new JTextField(20);
+		plateNoBox.setFocusable(true);
 		JButton r2 = new JButton("X");
 		r2.setMargin(new Insets(0, 0, 0, 0));
 		r2.setPreferredSize(new Dimension(22, 22));
@@ -544,7 +578,9 @@ public class SmartFormWindow extends JFrame {
 		loadingDateText.setEditable(false);
 		loadingDateText.setHighlighter(null);
 		loadingDateText.setPreferredSize(new Dimension(280, 30));
+		loadingDateText.setFocusable(false);
 		JTextField loadingDateBox = new JTextField(20);
+		loadingDateBox.setFocusable(true);
 		JButton clearLoadingDateButton = new JButton("X");
 		clearLoadingDateButton.setMargin(new Insets(0, 0, 0, 0));
 		clearLoadingDateButton.setPreferredSize(new Dimension(22, 22));
@@ -584,7 +620,9 @@ public class SmartFormWindow extends JFrame {
 		loadingAdressText.setEditable(false);
 		loadingAdressText.setHighlighter(null);
 		loadingAdressText.setPreferredSize(new Dimension(280, 30));
+		loadingAdressText.setFocusable(false);
 		JTextField loadingAdressBox = new JTextField(20);
+		loadingAdressBox.setFocusable(true);
 		JButton clearLoadingAdressButton = new JButton("X");
 		clearLoadingAdressButton.setMargin(new Insets(0, 0, 0, 0));
 		clearLoadingAdressButton.setPreferredSize(new Dimension(22, 22));
@@ -624,7 +662,9 @@ public class SmartFormWindow extends JFrame {
 		refText.setEditable(false);
 		refText.setHighlighter(null);
 		refText.setPreferredSize(new Dimension(280, 30));
+		refText.setFocusable(false);
 		JTextField refBox = new JTextField(20);
+		refBox.setFocusable(true);
 		JButton clearRefButton = new JButton("X");
 		clearRefButton.setMargin(new Insets(0, 0, 0, 0));
 		clearRefButton.setPreferredSize(new Dimension(22, 22));
@@ -664,7 +704,9 @@ public class SmartFormWindow extends JFrame {
 		unloadingDateText.setEditable(false);
 		unloadingDateText.setHighlighter(null);
 		unloadingDateText.setPreferredSize(new Dimension(280, 30));
+		unloadingDateText.setFocusable(false);
 		JTextField unloadingDateBox = new JTextField(20);
+		unloadingDateBox.setFocusable(true);
 		JButton clearUnloadingDateButton = new JButton("X");
 		clearUnloadingDateButton.setMargin(new Insets(0, 0, 0, 0));
 		clearUnloadingDateButton.setPreferredSize(new Dimension(22, 22));
@@ -704,8 +746,10 @@ public class SmartFormWindow extends JFrame {
 		unloadingAdressText.setEditable(false);
 		unloadingAdressText.setHighlighter(null);
 		unloadingAdressText.setPreferredSize(new Dimension(280, 30));
+		unloadingAdressText.setFocusable(false);
 		//unloadingAdressText.setPreferredSize(new Dimension(290, 30));
 		JTextField unloadingAdressBox = new JTextField(20);
+		unloadingAdressBox.setFocusable(true);
 		JButton clearUnloadingAdressButton = new JButton("X");
 		clearUnloadingAdressButton.setMargin(new Insets(0, 0, 0, 0));
 		clearUnloadingAdressButton.setPreferredSize(new Dimension(22, 22));
