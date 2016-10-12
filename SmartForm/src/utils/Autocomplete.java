@@ -13,13 +13,13 @@ import javax.swing.text.BadLocationException;
 
 public class Autocomplete implements DocumentListener {
 
-	private static enum Mode {
+	public static enum Mode {
 		INSERT, COMPLETION
 	};
 
-	private JTextField textField;
-	private List<String> keywords;
-	private Mode mode = Mode.INSERT;
+	public JTextField textField;
+	public List<String> keywords;
+	public Mode mode = null;
 
 	public Autocomplete(JTextField textField, List<String> keywords) {
 		this.textField = textField;
@@ -66,6 +66,7 @@ public class Autocomplete implements DocumentListener {
 		if (n < 0 && -n <= keywords.size() && prefix.length() != 0) {
 			String match = keywords.get(-n - 1);
 			if (match.startsWith(prefix)) {
+				mode = Mode.COMPLETION;
 				// A completion is found
 				String completion = match.substring(pos - w);
 				// We cannot modify Document from within notification,
@@ -77,7 +78,7 @@ public class Autocomplete implements DocumentListener {
 			mode = Mode.INSERT;
 		}
 	}
-
+	
 	public class CommitAction extends AbstractAction {
 		/**
 		 * 

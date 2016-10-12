@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -38,6 +39,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import utils.Autocomplete;
+import utils.MyKeyListener;
 import utils.SmartForm;
 import utils.TextReplacer;
 
@@ -57,6 +59,7 @@ public class SmartFormWindow extends JFrame {
 	private static ArrayList<String> dataDescarcare = null;
 	private static ArrayList<String> adresaDescarcare = null;
 	private static ArrayList<String> pretTransport = null;
+	private static boolean useTab = true;
 
 	private static void readCacheData() {
 		try (BufferedReader br = new BufferedReader(new FileReader("autocomplete_cache.txt"))) {
@@ -226,6 +229,7 @@ public class SmartFormWindow extends JFrame {
 		}
 	}
 
+	
 	public static void main(String[] args) throws MalformedURLException {
 		// First read data for autocomplete fields:
 		readCacheData();
@@ -246,21 +250,45 @@ public class SmartFormWindow extends JFrame {
 		Background background = new Background("ubuntu.png", dim);
 		background.setSize(600, 700);
 		background.repaint();
-		
-		
-		KeyListener keyListener = new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {}
-			@Override
-			public void keyReleased(KeyEvent e) {}
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == 9 ) {
-					System.out.println("Key pressed: TAB");
-				}
-				System.out.println("code: " + e.getKeyCode());
-			}
-		};
+
+		JTextField noOrderBox = new JTextField(20);
+		JTextField dateBox = new JTextField(20);
+		JTextField transporteNameBox = new JTextField(20);
+		JTextField contactPersonBox = new JTextField(20);
+		JTextField goodsTypeBox = new JTextField(20);
+		JTextField priceBox = new JTextField(20);
+		JTextField plateNoBox = new JTextField(20);
+		JTextField loadingDateBox = new JTextField(20);
+		JTextField loadingAdressBox = new JTextField(20);
+		JTextField refBox = new JTextField(20);
+		JTextField unloadingDateBox = new JTextField(20);
+		JTextField unloadingAdressBox = new JTextField(20);
+
+		Autocomplete autoComplete12 = new Autocomplete(noOrderBox, numarComanda);
+		Autocomplete autoComplete11 = new Autocomplete(dateBox, dinData);
+		Autocomplete autoComplete10 = new Autocomplete(transporteNameBox, numeTransportator);
+		Autocomplete autoComplete9 = new Autocomplete(contactPersonBox, inAtentia);
+		Autocomplete autoComplete8 = new Autocomplete(goodsTypeBox, tipMarfa);
+		Autocomplete autoComplete7 = new Autocomplete(priceBox, pretTransport);
+		Autocomplete autoComplete = new Autocomplete(plateNoBox, numarInmatriculare);
+		Autocomplete autoComplete2 = new Autocomplete(loadingDateBox, dataIncarcare);
+		Autocomplete autoComplete3 = new Autocomplete(loadingAdressBox, adresaIncarcare);
+		Autocomplete autoComplete4 = new Autocomplete(refBox, referintaIncarcare);
+		Autocomplete autoComplete5 = new Autocomplete(unloadingDateBox, dataDescarcare);
+		Autocomplete autoComplete6 = new Autocomplete(unloadingAdressBox, adresaDescarcare);
+
+		MyKeyListener keyListener12 = new MyKeyListener(autoComplete12, noOrderBox);
+		MyKeyListener keyListener11 = new MyKeyListener(autoComplete11, dateBox);
+		MyKeyListener keyListener10 = new MyKeyListener(autoComplete10, transporteNameBox);
+		MyKeyListener keyListener9 = new MyKeyListener(autoComplete9, contactPersonBox);
+		MyKeyListener keyListener8 = new MyKeyListener(autoComplete8, goodsTypeBox);
+		MyKeyListener keyListener7 = new MyKeyListener(autoComplete7, priceBox);
+		MyKeyListener keyListener = new MyKeyListener(autoComplete, plateNoBox);
+		MyKeyListener keyListener2 = new MyKeyListener(autoComplete2, loadingDateBox);
+		MyKeyListener keyListener3 = new MyKeyListener(autoComplete3, loadingAdressBox);
+		MyKeyListener keyListener4 = new MyKeyListener(autoComplete4, refBox);
+		MyKeyListener keyListener5 = new MyKeyListener(autoComplete5, unloadingDateBox);
+		MyKeyListener keyListener6 = new MyKeyListener(autoComplete6, unloadingAdressBox);
 
 		// Numar comanda:
 		FlowLayout noOrderLayout = new FlowLayout();
@@ -276,9 +304,8 @@ public class SmartFormWindow extends JFrame {
 		noOrderText.setHighlighter(null);
 		noOrderText.setPreferredSize(new Dimension(280, 30));
 		noOrderText.setFocusable(false);
-		JTextField noOrderBox = new JTextField(20);
 		noOrderBox.setFocusable(true);
-		noOrderBox.addKeyListener(keyListener);
+		noOrderBox.addKeyListener(keyListener12);
 		noOrderBox.setAlignmentX(RIGHT_ALIGNMENT);
 		JButton clearNoOrderButton = new JButton("X");
 		clearNoOrderButton.setMargin(new Insets(0, 0, 0, 0));
@@ -297,13 +324,13 @@ public class SmartFormWindow extends JFrame {
 		noOrderPanel.setOpaque(false);
 		// ---> Start of autocomplete code for noOrderBox:
 		// Without this, cursor always leaves text field
-		noOrderBox.setFocusTraversalKeysEnabled(true);
-		Autocomplete autoComplete12 = new Autocomplete(noOrderBox, numarComanda);
+		noOrderBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
 		noOrderBox.getDocument().addDocumentListener(autoComplete12);
 		// Maps the tab key to the commit action, which finishes the
 		// autocomplete when given a suggestion:
 		noOrderBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
 		noOrderBox.getActionMap().put(COMMIT_ACTION, autoComplete12.new CommitAction());
+
 		// <--- end of autocomplete for noOrderBox
 
 		// Din data:
@@ -320,9 +347,8 @@ public class SmartFormWindow extends JFrame {
 		dateText.setHighlighter(null);
 		dateText.setPreferredSize(new Dimension(280, 30));
 		dateText.setFocusable(false);
-		JTextField dateBox = new JTextField(20);
 		dateBox.setFocusable(true);
-		dateBox.addKeyListener(keyListener);
+		dateBox.addKeyListener(keyListener11);
 		dateBox.setAlignmentX(RIGHT_ALIGNMENT);
 		JButton clearDateButton = new JButton("X");
 		clearDateButton.setMargin(new Insets(0, 0, 0, 0));
@@ -341,8 +367,7 @@ public class SmartFormWindow extends JFrame {
 		datePanel.setOpaque(false);
 		// ---> Start of autocomplete code for dateBox:
 		// Without this, cursor always leaves text field
-		dateBox.setFocusTraversalKeysEnabled(false);
-		Autocomplete autoComplete11 = new Autocomplete(dateBox, dinData);
+		dateBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
 		dateBox.getDocument().addDocumentListener(autoComplete11);
 		// Maps the tab key to the commit action, which finishes the
 		// autocomplete when given a suggestion:
@@ -364,9 +389,8 @@ public class SmartFormWindow extends JFrame {
 		transporteNameText.setHighlighter(null);
 		transporteNameText.setPreferredSize(new Dimension(280, 30));
 		transporteNameText.setFocusable(false);
-		JTextField transporteNameBox = new JTextField(20);
 		transporteNameBox.setFocusable(true);
-		transporteNameBox.addKeyListener(keyListener);
+		transporteNameBox.addKeyListener(keyListener10);
 		transporteNameBox.setAlignmentX(RIGHT_ALIGNMENT);
 		JButton clearTransporterNameButton = new JButton("X");
 		clearTransporterNameButton.setMargin(new Insets(0, 0, 0, 0));
@@ -385,8 +409,7 @@ public class SmartFormWindow extends JFrame {
 		transporteNamePanel.setOpaque(false);
 		// ---> Start of autocomplete code for transporteNameBox:
 		// Without this, cursor always leaves text field
-		transporteNameBox.setFocusTraversalKeysEnabled(false);
-		Autocomplete autoComplete10 = new Autocomplete(transporteNameBox, numeTransportator);
+		transporteNameBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
 		transporteNameBox.getDocument().addDocumentListener(autoComplete10);
 		// Maps the tab key to the commit action, which finishes the
 		// autocomplete when given a suggestion:
@@ -408,8 +431,8 @@ public class SmartFormWindow extends JFrame {
 		contactPersonText.setHighlighter(null);
 		contactPersonText.setPreferredSize(new Dimension(280, 30));
 		contactPersonText.setFocusable(false);
-		JTextField contactPersonBox = new JTextField(20);
 		contactPersonBox.setFocusable(true);
+		contactPersonBox.addKeyListener(keyListener9);
 		contactPersonBox.setAlignmentX(RIGHT_ALIGNMENT);
 		JButton clearContactPersonButton = new JButton("X");
 		clearContactPersonButton.setMargin(new Insets(0, 0, 0, 0));
@@ -428,8 +451,7 @@ public class SmartFormWindow extends JFrame {
 		contactPersonPanel.setOpaque(false);
 		// ---> Start of autocomplete code for contactPersonBox:
 		// Without this, cursor always leaves text field
-		contactPersonBox.setFocusTraversalKeysEnabled(false);
-		Autocomplete autoComplete9 = new Autocomplete(contactPersonBox, inAtentia);
+		contactPersonBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
 		contactPersonBox.getDocument().addDocumentListener(autoComplete9);
 		// Maps the tab key to the commit action, which finishes the
 		// autocomplete when given a suggestion:
@@ -451,8 +473,8 @@ public class SmartFormWindow extends JFrame {
 		goodsTypeText.setHighlighter(null);
 		goodsTypeText.setPreferredSize(new Dimension(280, 30));
 		goodsTypeText.setFocusable(false);
-		JTextField goodsTypeBox = new JTextField(20);
 		goodsTypeBox.setFocusable(true);
+		goodsTypeBox.addKeyListener(keyListener8);
 		goodsTypeBox.setAlignmentX(RIGHT_ALIGNMENT);
 		JButton clearGoodsTypeButton = new JButton("X");
 		clearGoodsTypeButton.setMargin(new Insets(0, 0, 0, 0));
@@ -471,8 +493,7 @@ public class SmartFormWindow extends JFrame {
 		goodsTypePanel.setOpaque(false);
 		// ---> Start of autocomplete code for goodsTypeBox:
 		// Without this, cursor always leaves text field
-		goodsTypeBox.setFocusTraversalKeysEnabled(false);
-		Autocomplete autoComplete8 = new Autocomplete(goodsTypeBox, tipMarfa);
+		goodsTypeBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
 		goodsTypeBox.getDocument().addDocumentListener(autoComplete8);
 		// Maps the tab key to the commit action, which finishes the
 		// autocomplete when given a suggestion:
@@ -494,8 +515,8 @@ public class SmartFormWindow extends JFrame {
 		priceText.setHighlighter(null);
 		priceText.setPreferredSize(new Dimension(280, 30));
 		priceText.setFocusable(false);
-		JTextField priceBox = new JTextField(20);
 		priceBox.setFocusable(true);
+		priceBox.addKeyListener(keyListener7);
 		priceBox.setAlignmentX(RIGHT_ALIGNMENT);
 		JButton clearPriceButton = new JButton("X");
 		clearPriceButton.setMargin(new Insets(0, 0, 0, 0));
@@ -514,8 +535,7 @@ public class SmartFormWindow extends JFrame {
 		pricePanel.setOpaque(false);
 		// ---> Start of autocomplete code for priceBox:
 		// Without this, cursor always leaves text field
-		priceBox.setFocusTraversalKeysEnabled(false);
-		Autocomplete autoComplete7 = new Autocomplete(priceBox, pretTransport);
+		priceBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
 		priceBox.getDocument().addDocumentListener(autoComplete7);
 		// Maps the tab key to the commit action, which finishes the
 		// autocomplete when given a suggestion:
@@ -537,8 +557,8 @@ public class SmartFormWindow extends JFrame {
 		plateNoText.setHighlighter(null);
 		plateNoText.setPreferredSize(new Dimension(280, 30));
 		plateNoText.setFocusable(false);
-		JTextField plateNoBox = new JTextField(20);
 		plateNoBox.setFocusable(true);
+		plateNoBox.addKeyListener(keyListener);
 		JButton r2 = new JButton("X");
 		r2.setMargin(new Insets(0, 0, 0, 0));
 		r2.setPreferredSize(new Dimension(22, 22));
@@ -556,8 +576,7 @@ public class SmartFormWindow extends JFrame {
 		plateNoPanel.setOpaque(false);
 		// ---> Start of autocomplete code for plateNoBox:
 		// Without this, cursor always leaves text field
-		plateNoBox.setFocusTraversalKeysEnabled(false);
-		Autocomplete autoComplete = new Autocomplete(plateNoBox, numarInmatriculare);
+		plateNoBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
 		plateNoBox.getDocument().addDocumentListener(autoComplete);
 		// Maps the tab key to the commit action, which finishes the
 		// autocomplete when given a suggestion:
@@ -579,8 +598,8 @@ public class SmartFormWindow extends JFrame {
 		loadingDateText.setHighlighter(null);
 		loadingDateText.setPreferredSize(new Dimension(280, 30));
 		loadingDateText.setFocusable(false);
-		JTextField loadingDateBox = new JTextField(20);
 		loadingDateBox.setFocusable(true);
+		loadingDateText.addKeyListener(keyListener2);
 		JButton clearLoadingDateButton = new JButton("X");
 		clearLoadingDateButton.setMargin(new Insets(0, 0, 0, 0));
 		clearLoadingDateButton.setPreferredSize(new Dimension(22, 22));
@@ -598,8 +617,7 @@ public class SmartFormWindow extends JFrame {
 		loadingDatePanel.setOpaque(false);
 		// ---> Start of autocomplete code for loadingDateBox:
 		// Without this, cursor always leaves text field
-		loadingDateBox.setFocusTraversalKeysEnabled(false);
-		Autocomplete autoComplete2 = new Autocomplete(loadingDateBox, dataIncarcare);
+		loadingDateBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
 		loadingDateBox.getDocument().addDocumentListener(autoComplete2);
 		// Maps the tab key to the commit action, which finishes the
 		// autocomplete when given a suggestion:
@@ -621,8 +639,8 @@ public class SmartFormWindow extends JFrame {
 		loadingAdressText.setHighlighter(null);
 		loadingAdressText.setPreferredSize(new Dimension(280, 30));
 		loadingAdressText.setFocusable(false);
-		JTextField loadingAdressBox = new JTextField(20);
 		loadingAdressBox.setFocusable(true);
+		loadingAdressBox.addKeyListener(keyListener3);
 		JButton clearLoadingAdressButton = new JButton("X");
 		clearLoadingAdressButton.setMargin(new Insets(0, 0, 0, 0));
 		clearLoadingAdressButton.setPreferredSize(new Dimension(22, 22));
@@ -640,8 +658,7 @@ public class SmartFormWindow extends JFrame {
 		loadingAdressPanel.setOpaque(false);
 		// ---> Start of autocomplete code for loadingAdressBox:
 		// Without this, cursor always leaves text field
-		loadingAdressBox.setFocusTraversalKeysEnabled(false);
-		Autocomplete autoComplete3 = new Autocomplete(loadingAdressBox, adresaIncarcare);
+		loadingAdressBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
 		loadingAdressBox.getDocument().addDocumentListener(autoComplete3);
 		// Maps the tab key to the commit action, which finishes the
 		// autocomplete when given a suggestion:
@@ -663,8 +680,8 @@ public class SmartFormWindow extends JFrame {
 		refText.setHighlighter(null);
 		refText.setPreferredSize(new Dimension(280, 30));
 		refText.setFocusable(false);
-		JTextField refBox = new JTextField(20);
 		refBox.setFocusable(true);
+		refBox.addKeyListener(keyListener4);
 		JButton clearRefButton = new JButton("X");
 		clearRefButton.setMargin(new Insets(0, 0, 0, 0));
 		clearRefButton.setPreferredSize(new Dimension(22, 22));
@@ -682,8 +699,7 @@ public class SmartFormWindow extends JFrame {
 		refPanel.setOpaque(false);
 		// ---> Start of autocomplete code for refBox:
 		// Without this, cursor always leaves text field
-		refBox.setFocusTraversalKeysEnabled(false);
-		Autocomplete autoComplete4 = new Autocomplete(refBox, referintaIncarcare);
+		refBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
 		refBox.getDocument().addDocumentListener(autoComplete4);
 		// Maps the tab key to the commit action, which finishes the
 		// autocomplete when given a suggestion:
@@ -705,8 +721,8 @@ public class SmartFormWindow extends JFrame {
 		unloadingDateText.setHighlighter(null);
 		unloadingDateText.setPreferredSize(new Dimension(280, 30));
 		unloadingDateText.setFocusable(false);
-		JTextField unloadingDateBox = new JTextField(20);
 		unloadingDateBox.setFocusable(true);
+		unloadingDateBox.addKeyListener(keyListener5);
 		JButton clearUnloadingDateButton = new JButton("X");
 		clearUnloadingDateButton.setMargin(new Insets(0, 0, 0, 0));
 		clearUnloadingDateButton.setPreferredSize(new Dimension(22, 22));
@@ -724,8 +740,7 @@ public class SmartFormWindow extends JFrame {
 		unloadingDatePanel.setOpaque(false);
 		// ---> Start of autocomplete code for unloadingDateBox:
 		// Without this, cursor always leaves text field
-		unloadingDateBox.setFocusTraversalKeysEnabled(false);
-		Autocomplete autoComplete5 = new Autocomplete(unloadingDateBox, dataDescarcare);
+		unloadingDateBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
 		unloadingDateBox.getDocument().addDocumentListener(autoComplete5);
 		// Maps the tab key to the commit action, which finishes the
 		// autocomplete when given a suggestion:
@@ -747,8 +762,9 @@ public class SmartFormWindow extends JFrame {
 		unloadingAdressText.setHighlighter(null);
 		unloadingAdressText.setPreferredSize(new Dimension(280, 30));
 		unloadingAdressText.setFocusable(false);
-		//unloadingAdressText.setPreferredSize(new Dimension(290, 30));
-		JTextField unloadingAdressBox = new JTextField(20);
+		unloadingAdressText.addKeyListener(keyListener6);
+
+		// unloadingAdressText.setPreferredSize(new Dimension(290, 30));
 		unloadingAdressBox.setFocusable(true);
 		JButton clearUnloadingAdressButton = new JButton("X");
 		clearUnloadingAdressButton.setMargin(new Insets(0, 0, 0, 0));
@@ -767,8 +783,7 @@ public class SmartFormWindow extends JFrame {
 		unloadingAdressPanel.setOpaque(false);
 		// ---> Start of autocomplete code for unloadingAdressBox:
 		// Without this, cursor always leaves text field
-		unloadingAdressBox.setFocusTraversalKeysEnabled(false);
-		Autocomplete autoComplete6 = new Autocomplete(unloadingAdressBox, adresaDescarcare);
+		unloadingAdressBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
 		unloadingAdressBox.getDocument().addDocumentListener(autoComplete6);
 		// Maps the tab key to the commit action, which finishes the
 		// autocomplete when given a suggestion:
@@ -788,9 +803,11 @@ public class SmartFormWindow extends JFrame {
 		savetxt.setOpaque(false);
 		savetxt.setEditable(false);
 		savetxt.setHighlighter(null);
+		savetxt.setFocusable(false);
 		JButton saveButton = new JButton("Save");
 		saveButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		saveButton.setVerticalTextPosition(SwingConstants.CENTER);
+		saveButton.setFocusable(false);
 		saveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -848,7 +865,8 @@ public class SmartFormWindow extends JFrame {
 								"Data de descarcare: " + unloadingDate);
 						TextReplacer rep11 = new TextReplacer("Adresa de descarcare:",
 								"Adresa de descarcare: " + unloadingAdress);
-						TextReplacer rep12 = new TextReplacer("Pret transport:", "Pret transport: " + price, true, true, true);
+						TextReplacer rep12 = new TextReplacer("Pret transport:", "Pret transport: " + price, true, true,
+								true);
 						try {
 							// Cream fisierul Word docx:
 							docx = new XWPFDocument(new FileInputStream(SmartFormWindow.docxName));
@@ -912,6 +930,7 @@ public class SmartFormWindow extends JFrame {
 		JButton clearAllButton = new JButton("Clear all");
 		clearAllButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		clearAllButton.setVerticalTextPosition(SwingConstants.CENTER);
+		clearAllButton.setFocusable(false);
 		clearAllButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
