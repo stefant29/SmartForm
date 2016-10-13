@@ -57,7 +57,7 @@ public class Autocomplete implements DocumentListener {
 		int w;
 		for (w = pos; w >= 0; w--) {
 			if (!Character.isLetter(content.charAt(w)) && !Character.isDigit(content.charAt(w))) {
-				System.out.println(content.charAt(w));
+				// break if there is a non letter or non digit
 				break;
 			}
 		}
