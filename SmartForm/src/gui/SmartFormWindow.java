@@ -33,7 +33,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import utils.Autocomplete;
-import utils.MyKeyListener;
+import utils.TabKeyListener;
 import utils.SmartForm;
 import utils.TextReplacer;
 
@@ -215,7 +215,8 @@ public class SmartFormWindow extends JFrame {
 	 *            - list of elements where the string should be added
 	 */
 	private static void addToList(String inputString, ArrayList<String> list) {
-		String[] split = inputString.split(" ");
+		// We need to remove commas from the input string:
+		String[] split = inputString.replaceAll(",", "").split(" ");
 		for (int i = 0; i < split.length; i++) {
 			if (!list.contains(split[i]) && !split[i].equals("")) {
 				list.add(split[i]);
@@ -223,7 +224,6 @@ public class SmartFormWindow extends JFrame {
 		}
 	}
 
-	
 	public static void main(String[] args) throws MalformedURLException {
 		// First read data for autocomplete fields:
 		readCacheData();
@@ -258,31 +258,31 @@ public class SmartFormWindow extends JFrame {
 		JTextField unloadingDateBox = new JTextField(20);
 		JTextField unloadingAdressBox = new JTextField(20);
 
-		Autocomplete autoComplete12 = new Autocomplete(noOrderBox, numarComanda);
-		Autocomplete autoComplete11 = new Autocomplete(dateBox, dinData);
-		Autocomplete autoComplete10 = new Autocomplete(transporteNameBox, numeTransportator);
-		Autocomplete autoComplete9 = new Autocomplete(contactPersonBox, inAtentia);
-		Autocomplete autoComplete8 = new Autocomplete(goodsTypeBox, tipMarfa);
-		Autocomplete autoComplete7 = new Autocomplete(priceBox, pretTransport);
-		Autocomplete autoComplete = new Autocomplete(plateNoBox, numarInmatriculare);
-		Autocomplete autoComplete2 = new Autocomplete(loadingDateBox, dataIncarcare);
-		Autocomplete autoComplete3 = new Autocomplete(loadingAdressBox, adresaIncarcare);
-		Autocomplete autoComplete4 = new Autocomplete(refBox, referintaIncarcare);
-		Autocomplete autoComplete5 = new Autocomplete(unloadingDateBox, dataDescarcare);
-		Autocomplete autoComplete6 = new Autocomplete(unloadingAdressBox, adresaDescarcare);
+		Autocomplete autoComplete1 = new Autocomplete(noOrderBox, numarComanda);
+		Autocomplete autoComplete2 = new Autocomplete(dateBox, dinData);
+		Autocomplete autoComplete3 = new Autocomplete(transporteNameBox, numeTransportator);
+		Autocomplete autoComplete4 = new Autocomplete(contactPersonBox, inAtentia);
+		Autocomplete autoComplete5 = new Autocomplete(plateNoBox, numarInmatriculare);
+		Autocomplete autoComplete6 = new Autocomplete(goodsTypeBox, tipMarfa);
+		Autocomplete autoComplete7 = new Autocomplete(loadingDateBox, dataIncarcare);
+		Autocomplete autoComplete8 = new Autocomplete(loadingAdressBox, adresaIncarcare);
+		Autocomplete autoComplete9 = new Autocomplete(refBox, referintaIncarcare);
+		Autocomplete autoComplete10 = new Autocomplete(unloadingDateBox, dataDescarcare);
+		Autocomplete autoComplete11 = new Autocomplete(unloadingAdressBox, adresaDescarcare);
+		Autocomplete autoComplete12 = new Autocomplete(priceBox, pretTransport);
 
-		MyKeyListener keyListener12 = new MyKeyListener(autoComplete12, noOrderBox);
-		MyKeyListener keyListener11 = new MyKeyListener(autoComplete11, dateBox);
-		MyKeyListener keyListener10 = new MyKeyListener(autoComplete10, transporteNameBox);
-		MyKeyListener keyListener9 = new MyKeyListener(autoComplete9, contactPersonBox);
-		MyKeyListener keyListener8 = new MyKeyListener(autoComplete8, goodsTypeBox);
-		MyKeyListener keyListener7 = new MyKeyListener(autoComplete7, priceBox);
-		MyKeyListener keyListener = new MyKeyListener(autoComplete, plateNoBox);
-		MyKeyListener keyListener2 = new MyKeyListener(autoComplete2, loadingDateBox);
-		MyKeyListener keyListener3 = new MyKeyListener(autoComplete3, loadingAdressBox);
-		MyKeyListener keyListener4 = new MyKeyListener(autoComplete4, refBox);
-		MyKeyListener keyListener5 = new MyKeyListener(autoComplete5, unloadingDateBox);
-		MyKeyListener keyListener6 = new MyKeyListener(autoComplete6, unloadingAdressBox);
+		TabKeyListener keyListener1 = new TabKeyListener(autoComplete1, noOrderBox);
+		TabKeyListener keyListener2 = new TabKeyListener(autoComplete2, dateBox);
+		TabKeyListener keyListener3 = new TabKeyListener(autoComplete3, transporteNameBox);
+		TabKeyListener keyListener4 = new TabKeyListener(autoComplete4, contactPersonBox);
+		TabKeyListener keyListener5 = new TabKeyListener(autoComplete5, plateNoBox);
+		TabKeyListener keyListener6 = new TabKeyListener(autoComplete6, goodsTypeBox);
+		TabKeyListener keyListener7 = new TabKeyListener(autoComplete7, loadingDateBox);
+		TabKeyListener keyListener8 = new TabKeyListener(autoComplete8, loadingAdressBox);
+		TabKeyListener keyListener9 = new TabKeyListener(autoComplete9, refBox);
+		TabKeyListener keyListener10 = new TabKeyListener(autoComplete10, unloadingDateBox);
+		TabKeyListener keyListener11 = new TabKeyListener(autoComplete11, unloadingAdressBox);
+		TabKeyListener keyListener12 = new TabKeyListener(autoComplete12, priceBox);
 
 		// Numar comanda:
 		FlowLayout noOrderLayout = new FlowLayout();
@@ -299,7 +299,7 @@ public class SmartFormWindow extends JFrame {
 		noOrderText.setPreferredSize(new Dimension(280, 30));
 		noOrderText.setFocusable(false);
 		noOrderBox.setFocusable(true);
-		noOrderBox.addKeyListener(keyListener12);
+		noOrderBox.addKeyListener(keyListener1);
 		noOrderBox.setAlignmentX(RIGHT_ALIGNMENT);
 		JButton clearNoOrderButton = new JButton("X");
 		clearNoOrderButton.setMargin(new Insets(0, 0, 0, 0));
@@ -319,12 +319,11 @@ public class SmartFormWindow extends JFrame {
 		// ---> Start of autocomplete code for noOrderBox:
 		// Without this, cursor always leaves text field
 		noOrderBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
-		noOrderBox.getDocument().addDocumentListener(autoComplete12);
+		noOrderBox.getDocument().addDocumentListener(autoComplete1);
 		// Maps the tab key to the commit action, which finishes the
 		// autocomplete when given a suggestion:
 		noOrderBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
-		noOrderBox.getActionMap().put(COMMIT_ACTION, autoComplete12.new CommitAction());
-
+		noOrderBox.getActionMap().put(COMMIT_ACTION, autoComplete1.new CommitAction());
 		// <--- end of autocomplete for noOrderBox
 
 		// Din data:
@@ -342,7 +341,7 @@ public class SmartFormWindow extends JFrame {
 		dateText.setPreferredSize(new Dimension(280, 30));
 		dateText.setFocusable(false);
 		dateBox.setFocusable(true);
-		dateBox.addKeyListener(keyListener11);
+		dateBox.addKeyListener(keyListener2);
 		dateBox.setAlignmentX(RIGHT_ALIGNMENT);
 		JButton clearDateButton = new JButton("X");
 		clearDateButton.setMargin(new Insets(0, 0, 0, 0));
@@ -362,11 +361,11 @@ public class SmartFormWindow extends JFrame {
 		// ---> Start of autocomplete code for dateBox:
 		// Without this, cursor always leaves text field
 		dateBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
-		dateBox.getDocument().addDocumentListener(autoComplete11);
+		dateBox.getDocument().addDocumentListener(autoComplete2);
 		// Maps the tab key to the commit action, which finishes the
 		// autocomplete when given a suggestion:
 		dateBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
-		dateBox.getActionMap().put(COMMIT_ACTION, autoComplete11.new CommitAction());
+		dateBox.getActionMap().put(COMMIT_ACTION, autoComplete2.new CommitAction());
 		// <--- end of autocomplete for dateBox
 
 		// Nume transportator:
@@ -384,7 +383,7 @@ public class SmartFormWindow extends JFrame {
 		transporteNameText.setPreferredSize(new Dimension(280, 30));
 		transporteNameText.setFocusable(false);
 		transporteNameBox.setFocusable(true);
-		transporteNameBox.addKeyListener(keyListener10);
+		transporteNameBox.addKeyListener(keyListener3);
 		transporteNameBox.setAlignmentX(RIGHT_ALIGNMENT);
 		JButton clearTransporterNameButton = new JButton("X");
 		clearTransporterNameButton.setMargin(new Insets(0, 0, 0, 0));
@@ -404,11 +403,11 @@ public class SmartFormWindow extends JFrame {
 		// ---> Start of autocomplete code for transporteNameBox:
 		// Without this, cursor always leaves text field
 		transporteNameBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
-		transporteNameBox.getDocument().addDocumentListener(autoComplete10);
+		transporteNameBox.getDocument().addDocumentListener(autoComplete3);
 		// Maps the tab key to the commit action, which finishes the
 		// autocomplete when given a suggestion:
 		transporteNameBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
-		transporteNameBox.getActionMap().put(COMMIT_ACTION, autoComplete10.new CommitAction());
+		transporteNameBox.getActionMap().put(COMMIT_ACTION, autoComplete3.new CommitAction());
 		// <--- end of autocomplete for contactPersonBox
 
 		// In atentia:
@@ -426,7 +425,7 @@ public class SmartFormWindow extends JFrame {
 		contactPersonText.setPreferredSize(new Dimension(280, 30));
 		contactPersonText.setFocusable(false);
 		contactPersonBox.setFocusable(true);
-		contactPersonBox.addKeyListener(keyListener9);
+		contactPersonBox.addKeyListener(keyListener4);
 		contactPersonBox.setAlignmentX(RIGHT_ALIGNMENT);
 		JButton clearContactPersonButton = new JButton("X");
 		clearContactPersonButton.setMargin(new Insets(0, 0, 0, 0));
@@ -446,12 +445,53 @@ public class SmartFormWindow extends JFrame {
 		// ---> Start of autocomplete code for contactPersonBox:
 		// Without this, cursor always leaves text field
 		contactPersonBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
-		contactPersonBox.getDocument().addDocumentListener(autoComplete9);
+		contactPersonBox.getDocument().addDocumentListener(autoComplete4);
 		// Maps the tab key to the commit action, which finishes the
 		// autocomplete when given a suggestion:
 		contactPersonBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
-		contactPersonBox.getActionMap().put(COMMIT_ACTION, autoComplete9.new CommitAction());
+		contactPersonBox.getActionMap().put(COMMIT_ACTION, autoComplete4.new CommitAction());
 		// <--- end of autocomplete for contactPersonBox
+
+		// Numar inmatriculare:
+		FlowLayout plateNoLayout = new FlowLayout();
+		plateNoLayout.setAlignment(FlowLayout.LEFT);
+		plateNoLayout.setHgap(20);
+		JPanel plateNoPanel = new JPanel(plateNoLayout);
+		JTextArea plateNoText = new JTextArea("Numar inmatriculare: ");
+		Font plateNoFont = new Font("Verdana", Font.BOLD, 22);
+		plateNoText.setFont(plateNoFont);
+		plateNoText.setForeground(Color.YELLOW);
+		plateNoText.setOpaque(false);
+		plateNoText.setEditable(false);
+		plateNoText.setHighlighter(null);
+		plateNoText.setPreferredSize(new Dimension(280, 30));
+		plateNoText.setFocusable(false);
+		plateNoBox.setFocusable(true);
+		plateNoBox.addKeyListener(keyListener5);
+		JButton clearPlateNoButton = new JButton("X");
+		clearPlateNoButton.setMargin(new Insets(0, 0, 0, 0));
+		clearPlateNoButton.setPreferredSize(new Dimension(22, 22));
+		clearPlateNoButton.setFocusable(false);
+		clearPlateNoButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				plateNoBox.setText("");
+			}
+		});
+		plateNoPanel.add(plateNoText);
+		plateNoPanel.add(plateNoBox);
+		plateNoPanel.add(clearPlateNoButton);
+		plateNoPanel.setSize(30, 20);
+		plateNoPanel.setOpaque(false);
+		// ---> Start of autocomplete code for plateNoBox:
+		// Without this, cursor always leaves text field
+		plateNoBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
+		plateNoBox.getDocument().addDocumentListener(autoComplete5);
+		// Maps the tab key to the commit action, which finishes the
+		// autocomplete when given a suggestion:
+		plateNoBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+		plateNoBox.getActionMap().put(COMMIT_ACTION, autoComplete5.new CommitAction());
+		// <--- end of autocomplete for plateNoBox
 
 		// Tip marfa:
 		FlowLayout goodsTypeLayout = new FlowLayout();
@@ -468,7 +508,7 @@ public class SmartFormWindow extends JFrame {
 		goodsTypeText.setPreferredSize(new Dimension(280, 30));
 		goodsTypeText.setFocusable(false);
 		goodsTypeBox.setFocusable(true);
-		goodsTypeBox.addKeyListener(keyListener8);
+		goodsTypeBox.addKeyListener(keyListener6);
 		goodsTypeBox.setAlignmentX(RIGHT_ALIGNMENT);
 		JButton clearGoodsTypeButton = new JButton("X");
 		clearGoodsTypeButton.setMargin(new Insets(0, 0, 0, 0));
@@ -488,12 +528,216 @@ public class SmartFormWindow extends JFrame {
 		// ---> Start of autocomplete code for goodsTypeBox:
 		// Without this, cursor always leaves text field
 		goodsTypeBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
-		goodsTypeBox.getDocument().addDocumentListener(autoComplete8);
+		goodsTypeBox.getDocument().addDocumentListener(autoComplete6);
 		// Maps the tab key to the commit action, which finishes the
 		// autocomplete when given a suggestion:
 		goodsTypeBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
-		goodsTypeBox.getActionMap().put(COMMIT_ACTION, autoComplete8.new CommitAction());
+		goodsTypeBox.getActionMap().put(COMMIT_ACTION, autoComplete6.new CommitAction());
 		// <--- end of autocomplete for goodsTypeBox
+
+		// Data incarcare:
+		FlowLayout loadingDateLayout = new FlowLayout();
+		loadingDateLayout.setAlignment(FlowLayout.LEFT);
+		loadingDateLayout.setHgap(20);
+		JPanel loadingDatePanel = new JPanel(loadingDateLayout);
+		JTextArea loadingDateText = new JTextArea("Data incarcare: ");
+		Font loadingDateFont = new Font("Verdana", Font.BOLD, 22);
+		loadingDateText.setFont(loadingDateFont);
+		loadingDateText.setForeground(Color.YELLOW);
+		loadingDateText.setOpaque(false);
+		loadingDateText.setEditable(false);
+		loadingDateText.setHighlighter(null);
+		loadingDateText.setPreferredSize(new Dimension(280, 30));
+		loadingDateText.setFocusable(false);
+		loadingDateBox.setFocusable(true);
+		loadingDateText.addKeyListener(keyListener7);
+		JButton clearLoadingDateButton = new JButton("X");
+		clearLoadingDateButton.setMargin(new Insets(0, 0, 0, 0));
+		clearLoadingDateButton.setPreferredSize(new Dimension(22, 22));
+		clearLoadingDateButton.setFocusable(false);
+		clearLoadingDateButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				loadingDateBox.setText("");
+			}
+		});
+		loadingDatePanel.add(loadingDateText);
+		loadingDatePanel.add(loadingDateBox);
+		loadingDatePanel.add(clearLoadingDateButton);
+		loadingDatePanel.setSize(30, 20);
+		loadingDatePanel.setOpaque(false);
+		// ---> Start of autocomplete code for loadingDateBox:
+		// Without this, cursor always leaves text field
+		loadingDateBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
+		loadingDateBox.getDocument().addDocumentListener(autoComplete7);
+		// Maps the tab key to the commit action, which finishes the
+		// autocomplete when given a suggestion:
+		loadingDateBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+		loadingDateBox.getActionMap().put(COMMIT_ACTION, autoComplete7.new CommitAction());
+		// <--- end of autocomplete for loadingDateBox
+
+		// Adresa incarcare:
+		FlowLayout loadingAdressLayout = new FlowLayout();
+		loadingAdressLayout.setAlignment(FlowLayout.LEFT);
+		loadingAdressLayout.setHgap(20);
+		JPanel loadingAdressPanel = new JPanel(loadingAdressLayout);
+		JTextArea loadingAdressText = new JTextArea("Adresa incarcare: ");
+		Font loadingAdressFont = new Font("Verdana", Font.BOLD, 22);
+		loadingAdressText.setFont(loadingAdressFont);
+		loadingAdressText.setForeground(Color.YELLOW);
+		loadingAdressText.setOpaque(false);
+		loadingAdressText.setEditable(false);
+		loadingAdressText.setHighlighter(null);
+		loadingAdressText.setPreferredSize(new Dimension(280, 30));
+		loadingAdressText.setFocusable(false);
+		loadingAdressBox.setFocusable(true);
+		loadingAdressBox.addKeyListener(keyListener8);
+		JButton clearLoadingAdressButton = new JButton("X");
+		clearLoadingAdressButton.setMargin(new Insets(0, 0, 0, 0));
+		clearLoadingAdressButton.setPreferredSize(new Dimension(22, 22));
+		clearLoadingAdressButton.setFocusable(false);
+		clearLoadingAdressButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				loadingAdressBox.setText("");
+			}
+		});
+		loadingAdressPanel.add(loadingAdressText);
+		loadingAdressPanel.add(loadingAdressBox);
+		loadingAdressPanel.add(clearLoadingAdressButton);
+		loadingAdressPanel.setSize(30, 20);
+		loadingAdressPanel.setOpaque(false);
+		// ---> Start of autocomplete code for loadingAdressBox:
+		// Without this, cursor always leaves text field
+		loadingAdressBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
+		loadingAdressBox.getDocument().addDocumentListener(autoComplete8);
+		// Maps the tab key to the commit action, which finishes the
+		// autocomplete when given a suggestion:
+		loadingAdressBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+		loadingAdressBox.getActionMap().put(COMMIT_ACTION, autoComplete8.new CommitAction());
+		// <--- end of autocomplete for loadingAdressBox
+
+		// Referinta incarcare:
+		FlowLayout refLayout = new FlowLayout();
+		refLayout.setAlignment(FlowLayout.LEFT);
+		refLayout.setHgap(20);
+		JPanel refPanel = new JPanel(loadingAdressLayout);
+		JTextArea refText = new JTextArea("Referinta incarcare: ");
+		Font refFont = new Font("Verdana", Font.BOLD, 22);
+		refText.setFont(refFont);
+		refText.setForeground(Color.YELLOW);
+		refText.setOpaque(false);
+		refText.setEditable(false);
+		refText.setHighlighter(null);
+		refText.setPreferredSize(new Dimension(280, 30));
+		refText.setFocusable(false);
+		refBox.setFocusable(true);
+		refBox.addKeyListener(keyListener9);
+		JButton clearRefButton = new JButton("X");
+		clearRefButton.setMargin(new Insets(0, 0, 0, 0));
+		clearRefButton.setPreferredSize(new Dimension(22, 22));
+		clearRefButton.setFocusable(false);
+		clearRefButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				refBox.setText("");
+			}
+		});
+		refPanel.add(refText);
+		refPanel.add(refBox);
+		refPanel.add(clearRefButton);
+		refPanel.setSize(30, 20);
+		refPanel.setOpaque(false);
+		// ---> Start of autocomplete code for refBox:
+		// Without this, cursor always leaves text field
+		refBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
+		refBox.getDocument().addDocumentListener(autoComplete9);
+		// Maps the tab key to the commit action, which finishes the
+		// autocomplete when given a suggestion:
+		refBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+		refBox.getActionMap().put(COMMIT_ACTION, autoComplete9.new CommitAction());
+		// <--- end of autocomplete for refBox
+
+		// Data descarcare:
+		FlowLayout unloadingDateLayout = new FlowLayout();
+		unloadingDateLayout.setAlignment(FlowLayout.LEFT);
+		unloadingDateLayout.setHgap(20);
+		JPanel unloadingDatePanel = new JPanel(unloadingDateLayout);
+		JTextArea unloadingDateText = new JTextArea("Data descarcare: ");
+		Font unloadingDateFont = new Font("Verdana", Font.BOLD, 22);
+		unloadingDateText.setFont(unloadingDateFont);
+		unloadingDateText.setForeground(Color.YELLOW);
+		unloadingDateText.setOpaque(false);
+		unloadingDateText.setEditable(false);
+		unloadingDateText.setHighlighter(null);
+		unloadingDateText.setPreferredSize(new Dimension(280, 30));
+		unloadingDateText.setFocusable(false);
+		unloadingDateBox.setFocusable(true);
+		unloadingDateBox.addKeyListener(keyListener10);
+		JButton clearUnloadingDateButton = new JButton("X");
+		clearUnloadingDateButton.setMargin(new Insets(0, 0, 0, 0));
+		clearUnloadingDateButton.setPreferredSize(new Dimension(22, 22));
+		clearUnloadingDateButton.setFocusable(false);
+		clearUnloadingDateButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				unloadingDateBox.setText("");
+			}
+		});
+		unloadingDatePanel.add(unloadingDateText);
+		unloadingDatePanel.add(unloadingDateBox);
+		unloadingDatePanel.add(clearUnloadingDateButton);
+		unloadingDatePanel.setSize(30, 20);
+		unloadingDatePanel.setOpaque(false);
+		// ---> Start of autocomplete code for unloadingDateBox:
+		// Without this, cursor always leaves text field
+		unloadingDateBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
+		unloadingDateBox.getDocument().addDocumentListener(autoComplete10);
+		// Maps the tab key to the commit action, which finishes the
+		// autocomplete when given a suggestion:
+		unloadingDateBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+		unloadingDateBox.getActionMap().put(COMMIT_ACTION, autoComplete10.new CommitAction());
+		// <--- end of autocomplete for unloadingDateBox
+
+		// Adresa descarcare:
+		FlowLayout unloadingAdressLayout = new FlowLayout();
+		unloadingAdressLayout.setAlignment(FlowLayout.LEFT);
+		unloadingAdressLayout.setHgap(20);
+		JPanel unloadingAdressPanel = new JPanel(unloadingAdressLayout);
+		JTextArea unloadingAdressText = new JTextArea("Adresa descarcare: ");
+		Font unloadingAdressFont = new Font("Verdana", Font.BOLD, 22);
+		unloadingAdressText.setFont(unloadingAdressFont);
+		unloadingAdressText.setForeground(Color.YELLOW);
+		unloadingAdressText.setOpaque(false);
+		unloadingAdressText.setEditable(false);
+		unloadingAdressText.setHighlighter(null);
+		unloadingAdressText.setPreferredSize(new Dimension(280, 30));
+		unloadingAdressText.setFocusable(false);
+		unloadingAdressText.addKeyListener(keyListener11);
+		JButton clearUnloadingAdressButton = new JButton("X");
+		clearUnloadingAdressButton.setMargin(new Insets(0, 0, 0, 0));
+		clearUnloadingAdressButton.setPreferredSize(new Dimension(22, 22));
+		clearUnloadingAdressButton.setFocusable(false);
+		clearUnloadingAdressButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				unloadingAdressBox.setText("");
+			}
+		});
+		unloadingAdressPanel.add(unloadingAdressText);
+		unloadingAdressPanel.add(unloadingAdressBox);
+		unloadingAdressPanel.add(clearUnloadingAdressButton);
+		unloadingAdressPanel.setSize(30, 20);
+		unloadingAdressPanel.setOpaque(false);
+		// ---> Start of autocomplete code for unloadingAdressBox:
+		// Without this, cursor always leaves text field
+		unloadingAdressBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
+		unloadingAdressBox.getDocument().addDocumentListener(autoComplete11);
+		// Maps the tab key to the commit action, which finishes the
+		// autocomplete when given a suggestion:
+		unloadingAdressBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
+		unloadingAdressBox.getActionMap().put(COMMIT_ACTION, autoComplete11.new CommitAction());
+		// <--- end of autocomplete for unloadingAdressBox
 
 		// Pret transport:
 		FlowLayout priceLayout = new FlowLayout();
@@ -510,7 +754,7 @@ public class SmartFormWindow extends JFrame {
 		priceText.setPreferredSize(new Dimension(280, 30));
 		priceText.setFocusable(false);
 		priceBox.setFocusable(true);
-		priceBox.addKeyListener(keyListener7);
+		priceBox.addKeyListener(keyListener12);
 		priceBox.setAlignmentX(RIGHT_ALIGNMENT);
 		JButton clearPriceButton = new JButton("X");
 		clearPriceButton.setMargin(new Insets(0, 0, 0, 0));
@@ -530,260 +774,12 @@ public class SmartFormWindow extends JFrame {
 		// ---> Start of autocomplete code for priceBox:
 		// Without this, cursor always leaves text field
 		priceBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
-		priceBox.getDocument().addDocumentListener(autoComplete7);
+		priceBox.getDocument().addDocumentListener(autoComplete12);
 		// Maps the tab key to the commit action, which finishes the
 		// autocomplete when given a suggestion:
 		priceBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
-		priceBox.getActionMap().put(COMMIT_ACTION, autoComplete7.new CommitAction());
+		priceBox.getActionMap().put(COMMIT_ACTION, autoComplete12.new CommitAction());
 		// <--- end of autocomplete for priceBox
-
-		// Numar inmatriculare:
-		FlowLayout plateNoLayout = new FlowLayout();
-		plateNoLayout.setAlignment(FlowLayout.LEFT);
-		plateNoLayout.setHgap(20);
-		JPanel plateNoPanel = new JPanel(plateNoLayout);
-		JTextArea plateNoText = new JTextArea("Numar inmatriculare: ");
-		Font plateNoFont = new Font("Verdana", Font.BOLD, 22);
-		plateNoText.setFont(plateNoFont);
-		plateNoText.setForeground(Color.YELLOW);
-		plateNoText.setOpaque(false);
-		plateNoText.setEditable(false);
-		plateNoText.setHighlighter(null);
-		plateNoText.setPreferredSize(new Dimension(280, 30));
-		plateNoText.setFocusable(false);
-		plateNoBox.setFocusable(true);
-		plateNoBox.addKeyListener(keyListener);
-		JButton r2 = new JButton("X");
-		r2.setMargin(new Insets(0, 0, 0, 0));
-		r2.setPreferredSize(new Dimension(22, 22));
-		r2.setFocusable(false);
-		r2.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				plateNoBox.setText("");
-			}
-		});
-		plateNoPanel.add(plateNoText);
-		plateNoPanel.add(plateNoBox);
-		plateNoPanel.add(r2);
-		plateNoPanel.setSize(30, 20);
-		plateNoPanel.setOpaque(false);
-		// ---> Start of autocomplete code for plateNoBox:
-		// Without this, cursor always leaves text field
-		plateNoBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
-		plateNoBox.getDocument().addDocumentListener(autoComplete);
-		// Maps the tab key to the commit action, which finishes the
-		// autocomplete when given a suggestion:
-		plateNoBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
-		plateNoBox.getActionMap().put(COMMIT_ACTION, autoComplete.new CommitAction());
-		// <--- end of autocomplete for plateNoBox
-
-		// Data incarcare:
-		FlowLayout loadingDateLayout = new FlowLayout();
-		loadingDateLayout.setAlignment(FlowLayout.LEFT);
-		loadingDateLayout.setHgap(20);
-		JPanel loadingDatePanel = new JPanel(loadingDateLayout);
-		JTextArea loadingDateText = new JTextArea("Data incarcare: ");
-		Font loadingDateFont = new Font("Verdana", Font.BOLD, 22);
-		loadingDateText.setFont(loadingDateFont);
-		loadingDateText.setForeground(Color.YELLOW);
-		loadingDateText.setOpaque(false);
-		loadingDateText.setEditable(false);
-		loadingDateText.setHighlighter(null);
-		loadingDateText.setPreferredSize(new Dimension(280, 30));
-		loadingDateText.setFocusable(false);
-		loadingDateBox.setFocusable(true);
-		loadingDateText.addKeyListener(keyListener2);
-		JButton clearLoadingDateButton = new JButton("X");
-		clearLoadingDateButton.setMargin(new Insets(0, 0, 0, 0));
-		clearLoadingDateButton.setPreferredSize(new Dimension(22, 22));
-		clearLoadingDateButton.setFocusable(false);
-		clearLoadingDateButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				loadingDateBox.setText("");
-			}
-		});
-		loadingDatePanel.add(loadingDateText);
-		loadingDatePanel.add(loadingDateBox);
-		loadingDatePanel.add(clearLoadingDateButton);
-		loadingDatePanel.setSize(30, 20);
-		loadingDatePanel.setOpaque(false);
-		// ---> Start of autocomplete code for loadingDateBox:
-		// Without this, cursor always leaves text field
-		loadingDateBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
-		loadingDateBox.getDocument().addDocumentListener(autoComplete2);
-		// Maps the tab key to the commit action, which finishes the
-		// autocomplete when given a suggestion:
-		loadingDateBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
-		loadingDateBox.getActionMap().put(COMMIT_ACTION, autoComplete2.new CommitAction());
-		// <--- end of autocomplete for loadingDateBox
-
-		// Adresa incarcare:
-		FlowLayout loadingAdressLayout = new FlowLayout();
-		loadingAdressLayout.setAlignment(FlowLayout.LEFT);
-		loadingAdressLayout.setHgap(20);
-		JPanel loadingAdressPanel = new JPanel(loadingAdressLayout);
-		JTextArea loadingAdressText = new JTextArea("Adresa incarcare: ");
-		Font loadingAdressFont = new Font("Verdana", Font.BOLD, 22);
-		loadingAdressText.setFont(loadingAdressFont);
-		loadingAdressText.setForeground(Color.YELLOW);
-		loadingAdressText.setOpaque(false);
-		loadingAdressText.setEditable(false);
-		loadingAdressText.setHighlighter(null);
-		loadingAdressText.setPreferredSize(new Dimension(280, 30));
-		loadingAdressText.setFocusable(false);
-		loadingAdressBox.setFocusable(true);
-		loadingAdressBox.addKeyListener(keyListener3);
-		JButton clearLoadingAdressButton = new JButton("X");
-		clearLoadingAdressButton.setMargin(new Insets(0, 0, 0, 0));
-		clearLoadingAdressButton.setPreferredSize(new Dimension(22, 22));
-		clearLoadingAdressButton.setFocusable(false);
-		clearLoadingAdressButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				loadingAdressBox.setText("");
-			}
-		});
-		loadingAdressPanel.add(loadingAdressText);
-		loadingAdressPanel.add(loadingAdressBox);
-		loadingAdressPanel.add(clearLoadingAdressButton);
-		loadingAdressPanel.setSize(30, 20);
-		loadingAdressPanel.setOpaque(false);
-		// ---> Start of autocomplete code for loadingAdressBox:
-		// Without this, cursor always leaves text field
-		loadingAdressBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
-		loadingAdressBox.getDocument().addDocumentListener(autoComplete3);
-		// Maps the tab key to the commit action, which finishes the
-		// autocomplete when given a suggestion:
-		loadingAdressBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
-		loadingAdressBox.getActionMap().put(COMMIT_ACTION, autoComplete3.new CommitAction());
-		// <--- end of autocomplete for loadingAdressBox
-
-		// Referinta incarcare:
-		FlowLayout refLayout = new FlowLayout();
-		refLayout.setAlignment(FlowLayout.LEFT);
-		refLayout.setHgap(20);
-		JPanel refPanel = new JPanel(loadingAdressLayout);
-		JTextArea refText = new JTextArea("Referinta incarcare: ");
-		Font refFont = new Font("Verdana", Font.BOLD, 22);
-		refText.setFont(refFont);
-		refText.setForeground(Color.YELLOW);
-		refText.setOpaque(false);
-		refText.setEditable(false);
-		refText.setHighlighter(null);
-		refText.setPreferredSize(new Dimension(280, 30));
-		refText.setFocusable(false);
-		refBox.setFocusable(true);
-		refBox.addKeyListener(keyListener4);
-		JButton clearRefButton = new JButton("X");
-		clearRefButton.setMargin(new Insets(0, 0, 0, 0));
-		clearRefButton.setPreferredSize(new Dimension(22, 22));
-		clearRefButton.setFocusable(false);
-		clearRefButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				refBox.setText("");
-			}
-		});
-		refPanel.add(refText);
-		refPanel.add(refBox);
-		refPanel.add(clearRefButton);
-		refPanel.setSize(30, 20);
-		refPanel.setOpaque(false);
-		// ---> Start of autocomplete code for refBox:
-		// Without this, cursor always leaves text field
-		refBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
-		refBox.getDocument().addDocumentListener(autoComplete4);
-		// Maps the tab key to the commit action, which finishes the
-		// autocomplete when given a suggestion:
-		refBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
-		refBox.getActionMap().put(COMMIT_ACTION, autoComplete4.new CommitAction());
-		// <--- end of autocomplete for refBox
-
-		// Data descarcare:
-		FlowLayout unloadingDateLayout = new FlowLayout();
-		unloadingDateLayout.setAlignment(FlowLayout.LEFT);
-		unloadingDateLayout.setHgap(20);
-		JPanel unloadingDatePanel = new JPanel(unloadingDateLayout);
-		JTextArea unloadingDateText = new JTextArea("Data descarcare: ");
-		Font unloadingDateFont = new Font("Verdana", Font.BOLD, 22);
-		unloadingDateText.setFont(unloadingDateFont);
-		unloadingDateText.setForeground(Color.YELLOW);
-		unloadingDateText.setOpaque(false);
-		unloadingDateText.setEditable(false);
-		unloadingDateText.setHighlighter(null);
-		unloadingDateText.setPreferredSize(new Dimension(280, 30));
-		unloadingDateText.setFocusable(false);
-		unloadingDateBox.setFocusable(true);
-		unloadingDateBox.addKeyListener(keyListener5);
-		JButton clearUnloadingDateButton = new JButton("X");
-		clearUnloadingDateButton.setMargin(new Insets(0, 0, 0, 0));
-		clearUnloadingDateButton.setPreferredSize(new Dimension(22, 22));
-		clearUnloadingDateButton.setFocusable(false);
-		clearUnloadingDateButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				unloadingDateBox.setText("");
-			}
-		});
-		unloadingDatePanel.add(unloadingDateText);
-		unloadingDatePanel.add(unloadingDateBox);
-		unloadingDatePanel.add(clearUnloadingDateButton);
-		unloadingDatePanel.setSize(30, 20);
-		unloadingDatePanel.setOpaque(false);
-		// ---> Start of autocomplete code for unloadingDateBox:
-		// Without this, cursor always leaves text field
-		unloadingDateBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
-		unloadingDateBox.getDocument().addDocumentListener(autoComplete5);
-		// Maps the tab key to the commit action, which finishes the
-		// autocomplete when given a suggestion:
-		unloadingDateBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
-		unloadingDateBox.getActionMap().put(COMMIT_ACTION, autoComplete5.new CommitAction());
-		// <--- end of autocomplete for unloadingDateBox
-
-		// Adresa descarcare:
-		FlowLayout unloadingAdressLayout = new FlowLayout();
-		unloadingAdressLayout.setAlignment(FlowLayout.LEFT);
-		unloadingAdressLayout.setHgap(20);
-		JPanel unloadingAdressPanel = new JPanel(unloadingAdressLayout);
-		JTextArea unloadingAdressText = new JTextArea("Adresa descarcare: ");
-		Font unloadingAdressFont = new Font("Verdana", Font.BOLD, 22);
-		unloadingAdressText.setFont(unloadingAdressFont);
-		unloadingAdressText.setForeground(Color.YELLOW);
-		unloadingAdressText.setOpaque(false);
-		unloadingAdressText.setEditable(false);
-		unloadingAdressText.setHighlighter(null);
-		unloadingAdressText.setPreferredSize(new Dimension(280, 30));
-		unloadingAdressText.setFocusable(false);
-		unloadingAdressText.addKeyListener(keyListener6);
-
-		// unloadingAdressText.setPreferredSize(new Dimension(290, 30));
-		unloadingAdressBox.setFocusable(true);
-		JButton clearUnloadingAdressButton = new JButton("X");
-		clearUnloadingAdressButton.setMargin(new Insets(0, 0, 0, 0));
-		clearUnloadingAdressButton.setPreferredSize(new Dimension(22, 22));
-		clearUnloadingAdressButton.setFocusable(false);
-		clearUnloadingAdressButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				unloadingAdressBox.setText("");
-			}
-		});
-		unloadingAdressPanel.add(unloadingAdressText);
-		unloadingAdressPanel.add(unloadingAdressBox);
-		unloadingAdressPanel.add(clearUnloadingAdressButton);
-		unloadingAdressPanel.setSize(30, 20);
-		unloadingAdressPanel.setOpaque(false);
-		// ---> Start of autocomplete code for unloadingAdressBox:
-		// Without this, cursor always leaves text field
-		unloadingAdressBox.setFocusTraversalKeysEnabled(SmartFormWindow.useTab);
-		unloadingAdressBox.getDocument().addDocumentListener(autoComplete6);
-		// Maps the tab key to the commit action, which finishes the
-		// autocomplete when given a suggestion:
-		unloadingAdressBox.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
-		unloadingAdressBox.getActionMap().put(COMMIT_ACTION, autoComplete6.new CommitAction());
-		// <--- end of autocomplete for unloadingAdressBox
 
 		// Salvare:
 		FlowLayout saveLayout = new FlowLayout();
@@ -891,20 +887,21 @@ public class SmartFormWindow extends JFrame {
 							addToList(loadingAdress, adresaIncarcare);
 							addToList(ref, referintaIncarcare);
 							addToList(unloadingDate, dataDescarcare);
+							addToList(unloadingAdress, adresaDescarcare);
 							addToList(priceBox.getText(), pretTransport);
 
-							autoComplete12.refreshList(numarComanda);
-							autoComplete11.refreshList(dinData);
-							autoComplete10.refreshList(numeTransportator);
-							autoComplete9.refreshList(inAtentia);
-							autoComplete.refreshList(numarInmatriculare);
-							autoComplete8.refreshList(tipMarfa);
-							autoComplete2.refreshList(dataIncarcare);
-							autoComplete3.refreshList(adresaIncarcare);
-							autoComplete4.refreshList(referintaIncarcare);
-							autoComplete5.refreshList(dataDescarcare);
-							autoComplete6.refreshList(adresaDescarcare);
-							autoComplete7.refreshList(pretTransport);
+							autoComplete1.refreshList(numarComanda);
+							autoComplete2.refreshList(dinData);
+							autoComplete3.refreshList(numeTransportator);
+							autoComplete4.refreshList(inAtentia);
+							autoComplete5.refreshList(numarInmatriculare);
+							autoComplete6.refreshList(tipMarfa);
+							autoComplete7.refreshList(dataIncarcare);
+							autoComplete8.refreshList(adresaIncarcare);
+							autoComplete9.refreshList(referintaIncarcare);
+							autoComplete10.refreshList(dataDescarcare);
+							autoComplete11.refreshList(adresaDescarcare);
+							autoComplete12.refreshList(pretTransport);
 
 							// save the lists to the cache file
 							saveCacheData();

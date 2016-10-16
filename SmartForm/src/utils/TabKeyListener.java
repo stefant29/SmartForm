@@ -5,14 +5,14 @@ import java.awt.event.KeyListener;
 import java.util.Collections;
 import javax.swing.JTextField;
 
-public class MyKeyListener implements KeyListener {
+public class TabKeyListener implements KeyListener {
 	Autocomplete autoComplete = null;
 	JTextField textField = null;
 
-	public MyKeyListener() {
+	public TabKeyListener() {
 	}
 
-	public MyKeyListener(Autocomplete autoComplete, JTextField textField) {
+	public TabKeyListener(Autocomplete autoComplete, JTextField textField) {
 		this.autoComplete = autoComplete;
 		this.textField = textField;
 	}
@@ -40,16 +40,17 @@ public class MyKeyListener implements KeyListener {
 			String match = autoComplete.keywords.get(-n - 1);
 			if (match.startsWith(text2))
 				knownLetter = true;
-
 			else
 				knownLetter = false;
 		} else
 			knownLetter = false;
 
 		if (e.getKeyCode() != 9 && e.getKeyCode() != 8 && e.getKeyCode() != 32 && knownLetter) 
-			textField.setFocusTraversalKeysEnabled(false);	// la apasare TAB autocompleteaza si scrie un spatiu
+			// Do autocomplete & write a whitespace 
+			textField.setFocusTraversalKeysEnabled(false);
 		else 
-			textField.setFocusTraversalKeysEnabled(true);	// la apasarea TAB trece la campul urmator
+			// Go to the next input box
+			textField.setFocusTraversalKeysEnabled(true); 
 	}
 
 	@Override
