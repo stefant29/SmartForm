@@ -26,7 +26,7 @@ public class Autocomplete implements DocumentListener {
 		this.keywords = keywords;
 		Collections.sort(keywords);
 	}
-	
+
 	public void refreshList(List<String> keywords) {
 		this.keywords = keywords;
 		Collections.sort(keywords);
@@ -46,13 +46,14 @@ public class Autocomplete implements DocumentListener {
 			return;
 
 		int pos = ev.getOffset();
+
 		String content = null;
 		try {
 			content = textField.getText(0, pos + 1);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
-
+		
 		// Find where the word starts
 		int w;
 		for (w = pos; w >= 0; w--) {
@@ -62,10 +63,12 @@ public class Autocomplete implements DocumentListener {
 			}
 		}
 		String prefix = content.substring(w + 1);
+		// System.out.println("prefix: " + prefix);
 		int n = Collections.binarySearch(keywords, prefix);
 		if (n < 0 && -n <= keywords.size() && prefix.length() != 0) {
 			String match = keywords.get(-n - 1);
 			if (match.startsWith(prefix)) {
+				textField.setFocusTraversalKeysEnabled(false);
 				mode = Mode.COMPLETION;
 				// A completion is found
 				String completion = match.substring(pos - w);
@@ -74,11 +77,12 @@ public class Autocomplete implements DocumentListener {
 				SwingUtilities.invokeLater(new CompletionTask(completion, pos + 1));
 			}
 		} else {
+			textField.setFocusTraversalKeysEnabled(true);
 			// Nothing found
 			mode = Mode.INSERT;
 		}
 	}
-	
+
 	public class CommitAction extends AbstractAction {
 		/**
 		 * 
@@ -94,8 +98,10 @@ public class Autocomplete implements DocumentListener {
 				textField.setText(sb.toString());
 				textField.setCaretPosition(pos + 1);
 				mode = Mode.INSERT;
+				textField.setFocusTraversalKeysEnabled(true); 
 			} else {
 				textField.replaceSelection("\t");
+				textField.setFocusTraversalKeysEnabled(false);
 			}
 		}
 	}
