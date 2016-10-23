@@ -60,35 +60,67 @@ public class SmartFormWindow extends JFrame {
 			String line = br.readLine();
 			while (line != null) {
 				String[] splitInput = line.split(": ");
-				String[] input = splitInput[1].split("% ");
-
-				if (splitInput[0].equals("numarComanda")) {
-					numarComanda = new ArrayList<String>(Arrays.asList(input));
-				} else if (splitInput[0].equals("dinData")) {
-					dinData = new ArrayList<String>(Arrays.asList(input));
-				} else if (splitInput[0].equals("numeTransportator")) {
-					numeTransportator = new ArrayList<String>(Arrays.asList(input));
-				} else if (splitInput[0].equals("inAtentia")) {
-					inAtentia = new ArrayList<String>(Arrays.asList(input));
-				} else if (splitInput[0].equals("numarInmatriculare")) {
-					numarInmatriculare = new ArrayList<String>(Arrays.asList(input));
-				} else if (splitInput[0].equals("tipMarfa")) {
-					tipMarfa = new ArrayList<String>(Arrays.asList(input));
-				} else if (splitInput[0].equals("dataIncarcare")) {
-					dataIncarcare = new ArrayList<String>(Arrays.asList(input));
-				} else if (splitInput[0].equals("adresaIncarcare")) {
-					adresaIncarcare = new ArrayList<String>(Arrays.asList(input));
-				} else if (splitInput[0].equals("referintaIncarcare")) {
-					referintaIncarcare = new ArrayList<String>(Arrays.asList(input));
-				} else if (splitInput[0].equals("dataDescarcare")) {
-					dataDescarcare = new ArrayList<String>(Arrays.asList(input));
-				} else if (splitInput[0].equals("adresaDescarcare")) {
-					adresaDescarcare = new ArrayList<String>(Arrays.asList(input));
-				} else if (splitInput[0].equals("pretTransport")) {
-					pretTransport = new ArrayList<String>(Arrays.asList(input));
+				// no input in "autocomplete_cache" document
+				if (splitInput.length == 1) {
+					if (splitInput[0].equals("numarComanda")) {
+						numarComanda = new ArrayList<String>();
+					} else if (splitInput[0].equals("dinData")) {
+						dinData = new ArrayList<String>();
+					} else if (splitInput[0].equals("numeTransportator")) {
+						numeTransportator = new ArrayList<String>();
+					} else if (splitInput[0].equals("inAtentia")) {
+						inAtentia = new ArrayList<String>();
+					} else if (splitInput[0].equals("numarInmatriculare")) {
+						numarInmatriculare = new ArrayList<String>();
+					} else if (splitInput[0].equals("tipMarfa")) {
+						tipMarfa = new ArrayList<String>();
+					} else if (splitInput[0].equals("dataIncarcare")) {
+						dataIncarcare = new ArrayList<String>();
+					} else if (splitInput[0].equals("adresaIncarcare")) {
+						adresaIncarcare = new ArrayList<String>();
+					} else if (splitInput[0].equals("referintaIncarcare")) {
+						referintaIncarcare = new ArrayList<String>();
+					} else if (splitInput[0].equals("dataDescarcare")) {
+						dataDescarcare = new ArrayList<String>();
+					} else if (splitInput[0].equals("adresaDescarcare")) {
+						adresaDescarcare = new ArrayList<String>();
+					} else if (splitInput[0].equals("pretTransport")) {
+						pretTransport = new ArrayList<String>();
+					} else {
+						// if the cache file contains input not known
+						System.out.println("Input type not known: " + splitInput[1]);
+					}
 				} else {
-					// if the cache file contains input not known
-					System.out.println("Input type not known: " + splitInput[1]);
+					String[] input = splitInput[1].split("% ");
+	
+					if (splitInput[0].equals("numarComanda")) {
+						numarComanda = new ArrayList<String>(Arrays.asList(input));
+					} else if (splitInput[0].equals("dinData")) {
+						dinData = new ArrayList<String>(Arrays.asList(input));
+					} else if (splitInput[0].equals("numeTransportator")) {
+						numeTransportator = new ArrayList<String>(Arrays.asList(input));
+					} else if (splitInput[0].equals("inAtentia")) {
+						inAtentia = new ArrayList<String>(Arrays.asList(input));
+					} else if (splitInput[0].equals("numarInmatriculare")) {
+						numarInmatriculare = new ArrayList<String>(Arrays.asList(input));
+					} else if (splitInput[0].equals("tipMarfa")) {
+						tipMarfa = new ArrayList<String>(Arrays.asList(input));
+					} else if (splitInput[0].equals("dataIncarcare")) {
+						dataIncarcare = new ArrayList<String>(Arrays.asList(input));
+					} else if (splitInput[0].equals("adresaIncarcare")) {
+						adresaIncarcare = new ArrayList<String>(Arrays.asList(input));
+					} else if (splitInput[0].equals("referintaIncarcare")) {
+						referintaIncarcare = new ArrayList<String>(Arrays.asList(input));
+					} else if (splitInput[0].equals("dataDescarcare")) {
+						dataDescarcare = new ArrayList<String>(Arrays.asList(input));
+					} else if (splitInput[0].equals("adresaDescarcare")) {
+						adresaDescarcare = new ArrayList<String>(Arrays.asList(input));
+					} else if (splitInput[0].equals("pretTransport")) {
+						pretTransport = new ArrayList<String>(Arrays.asList(input));
+					} else {
+						// if the cache file contains input not known
+						System.out.println("Input type not known: " + splitInput[1]);
+					}
 				}
 
 				sb.append(line);
@@ -101,53 +133,68 @@ public class SmartFormWindow extends JFrame {
 			e.printStackTrace();
 		}
 
-		for (int i = 0; i < numarComanda.size(); i++)
-			System.out.print(numarComanda.get(i) + "\t");
+		/* debugging
+		if (numarComanda != null)
+			for (int i = 0; i < numarComanda.size(); i++)
+				System.out.print(numarComanda.get(i) + "\t");
+			System.out.println();
+
+		if (dinData != null)
+			for (int i = 0; i < dinData.size(); i++)
+				System.out.print(dinData.get(i) + "\t");
 		System.out.println();
 
-		for (int i = 0; i < dinData.size(); i++)
-			System.out.print(dinData.get(i) + "\t");
+		if (numeTransportator != null)
+			for (int i = 0; i < numeTransportator.size(); i++)
+				System.out.print(numeTransportator.get(i) + "\t");
 		System.out.println();
 
-		for (int i = 0; i < numeTransportator.size(); i++)
-			System.out.print(numeTransportator.get(i) + "\t");
+		if (inAtentia != null)
+			for (int i = 0; i < inAtentia.size(); i++)
+				System.out.print(inAtentia.get(i) + "\t");
 		System.out.println();
 
-		for (int i = 0; i < inAtentia.size(); i++)
-			System.out.print(inAtentia.get(i) + "\t");
+		if (numarInmatriculare != null)
+			for (int i = 0; i < numarInmatriculare.size(); i++)
+				System.out.print(numarInmatriculare.get(i) + "\t");
 		System.out.println();
 
-		for (int i = 0; i < numarInmatriculare.size(); i++)
-			System.out.print(numarInmatriculare.get(i) + "\t");
+		if (tipMarfa != null)
+			for (int i = 0; i < tipMarfa.size(); i++)
+				System.out.print(tipMarfa.get(i) + "\t");
 		System.out.println();
 
-		for (int i = 0; i < tipMarfa.size(); i++)
-			System.out.print(tipMarfa.get(i) + "\t");
+		if (dataIncarcare != null)
+			for (int i = 0; i < dataIncarcare.size(); i++)
+				System.out.print(dataIncarcare.get(i) + "\t");
 		System.out.println();
 
-		for (int i = 0; i < dataIncarcare.size(); i++)
-			System.out.print(dataIncarcare.get(i) + "\t");
+		if (adresaIncarcare != null)
+			for (int i = 0; i < adresaIncarcare.size(); i++)
+				System.out.print(adresaIncarcare.get(i) + "\t");
 		System.out.println();
 
-		for (int i = 0; i < adresaIncarcare.size(); i++)
-			System.out.print(adresaIncarcare.get(i) + "\t");
+		if (referintaIncarcare != null)
+			for (int i = 0; i < referintaIncarcare.size(); i++)
+				System.out.print(referintaIncarcare.get(i) + "\t");
 		System.out.println();
 
-		for (int i = 0; i < referintaIncarcare.size(); i++)
-			System.out.print(referintaIncarcare.get(i) + "\t");
+		if (dataDescarcare != null)
+			for (int i = 0; i < dataDescarcare.size(); i++)
+				System.out.print(dataDescarcare.get(i) + "\t");
 		System.out.println();
 
-		for (int i = 0; i < dataDescarcare.size(); i++)
-			System.out.print(dataDescarcare.get(i) + "\t");
+		if (adresaDescarcare != null)
+			for (int i = 0; i < adresaDescarcare.size(); i++)
+				System.out.print(adresaDescarcare.get(i) + "\t");
 		System.out.println();
 
-		for (int i = 0; i < adresaDescarcare.size(); i++)
-			System.out.print(adresaDescarcare.get(i) + "\t");
+		if (pretTransport != null)
+			for (int i = 0; i < pretTransport.size(); i++)
+				System.out.print(pretTransport.get(i) + "\t");
 		System.out.println();
-
-		for (int i = 0; i < pretTransport.size(); i++)
-			System.out.print(pretTransport.get(i) + "\t");
-		System.out.println();
+		
+		*/
 
 	}
 
@@ -166,12 +213,20 @@ public class SmartFormWindow extends JFrame {
 			throws IOException {
 		writer.write(name);
 		if (list.size() == 0) {
+			writer.write("\n");
 			return;
-		} else
-			writer.write(list.get(0) + "%");
-		for (int i = 1; i < list.size() - 1; i++)
-			writer.write(" " + list.get(i) + "%");
-		writer.write(" " + list.get(list.size() - 1) + "\n");
+		} else {
+			if (list.size() == 1) {
+				writer.write(list.get(0) + "\n");
+			} else {
+				writer.write(list.get(0) + "%");
+
+				for (int i = 1; i < list.size() - 1; i++) 
+					writer.write(" " + list.get(i) + "%");
+				
+				writer.write(" " + list.get(list.size() - 1) + "\n");
+			}
+		}
 	}
 
 	/**
@@ -213,7 +268,7 @@ public class SmartFormWindow extends JFrame {
 	 * @param list
 	 *            - list of elements where the string should be added
 	 */
-	private static void addToList(String inputString, ArrayList<String> list) {
+	private static void addToList(String inputString, ArrayList<String> list, Autocomplete autoComplete) {
 		// We need to remove commas from the input string:
 		String[] split = inputString.replaceAll(",", "").split(" ");
 		for (int i = 0; i < split.length; i++) {
@@ -221,6 +276,7 @@ public class SmartFormWindow extends JFrame {
 				list.add(split[i]);
 			}
 		}
+		autoComplete.refreshList(list);
 	}
 
 	public static void main(String[] args) throws MalformedURLException {
@@ -853,31 +909,18 @@ public class SmartFormWindow extends JFrame {
 							System.out.println("Saved done!");
 
 							// Save the new inputs to current lists:
-							addToList(noOrderBox.getText(), numarComanda);
-							addToList(dateBox.getText(), dinData);
-							addToList(transporteNameBox.getText(), numeTransportator);
-							addToList(contactPersonBox.getText(), inAtentia);
-							addToList(plateNo, numarInmatriculare);
-							addToList(goodsTypeBox.getText(), tipMarfa);
-							addToList(loadingDate, dataIncarcare);
-							addToList(loadingAdress, adresaIncarcare);
-							addToList(ref, referintaIncarcare);
-							addToList(unloadingDate, dataDescarcare);
-							addToList(unloadingAdress, adresaDescarcare);
-							addToList(priceBox.getText(), pretTransport);
-
-							autoComplete1.refreshList(numarComanda);
-							autoComplete2.refreshList(dinData);
-							autoComplete3.refreshList(numeTransportator);
-							autoComplete4.refreshList(inAtentia);
-							autoComplete5.refreshList(numarInmatriculare);
-							autoComplete6.refreshList(tipMarfa);
-							autoComplete7.refreshList(dataIncarcare);
-							autoComplete8.refreshList(adresaIncarcare);
-							autoComplete9.refreshList(referintaIncarcare);
-							autoComplete10.refreshList(dataDescarcare);
-							autoComplete11.refreshList(adresaDescarcare);
-							autoComplete12.refreshList(pretTransport);
+							addToList(noOrderBox.getText(), numarComanda, autoComplete1);
+							addToList(dateBox.getText(), dinData, autoComplete2);
+							addToList(transporteNameBox.getText(), numeTransportator, autoComplete3);
+							addToList(contactPersonBox.getText(), inAtentia, autoComplete4);
+							addToList(plateNo, numarInmatriculare, autoComplete5);
+							addToList(goodsTypeBox.getText(), tipMarfa, autoComplete6);
+							addToList(loadingDate, dataIncarcare, autoComplete7);
+							addToList(loadingAdress, adresaIncarcare, autoComplete8);
+							addToList(ref, referintaIncarcare, autoComplete9);
+							addToList(unloadingDate, dataDescarcare, autoComplete10);
+							addToList(unloadingAdress, adresaDescarcare, autoComplete11);
+							addToList(priceBox.getText(), pretTransport, autoComplete12);
 
 							// save the lists to the cache file
 							saveCacheData();

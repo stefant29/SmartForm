@@ -1,12 +1,12 @@
-numarComanda: 10% 22
-dinData: 20% 22
-numeTransportator: 22% 30
-inAtentia: 22% 40
-numarInmatriculare: 102% 111% 222% 23333% 2333412% 333% 444% 500% 555% 666% 666666% 777% 888% 989898% 999% B% BOS% RAF
-tipMarfa: 22% 50
-dataIncarcare: 01% 02% 03% 04% 05% 08% 10% 14% 20% 2015% 2016% 31
-adresaIncarcare: Str% adresa1% adresa2% adresa3% adresa4% adresa5
-referintaIncarcare: 124124124% R% ref1% ref2% ref3% ref4% ref5
-dataDescarcare: 01% 03% 08% 10% 15% 20% 2015% 2016% drgrdg
-adresaDescarcare: Abatajului,% Bucuresti,% Romania% Strada% adresa1% adresa2% adresa3% adresa4% adresa5
-pretTransport: 100000 % 1034% 22% 500% 60
+numarComanda: 
+dinData: 
+numeTransportator: 
+inAtentia: 
+numarInmatriculare: 
+tipMarfa: 
+dataIncarcare: 
+adresaIncarcare: 
+referintaIncarcare: 
+dataDescarcare: 
+adresaDescarcare: 
+pretTransport: 
